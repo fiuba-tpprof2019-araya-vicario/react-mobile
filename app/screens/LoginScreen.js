@@ -38,8 +38,8 @@ export default class LoginScreen extends React.Component {
 
     return (
       <View style={styles.splash}>
-      <Text style={styles.title}>Brain Search</Text>
-      <Image  style={styles.image} source={require('../assets/home2.png')} />
+        {/*<Text style={styles.title}>Brain Search</Text>*/}
+        <Image  style={styles.image} source={require('../assets/home2.png')} />
 
 
       <View >

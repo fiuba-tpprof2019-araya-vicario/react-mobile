@@ -15,7 +15,16 @@ import ProfileScreen from '../screens/ProfileScreen'
 
 
 const MyProyectStack = createStackNavigator({
-  MyProyect: MyProyectScreen,
+  MyProyect: {
+    screen:MyProyectScreen,
+        navigationOptions: {
+                  // title: "Main",
+                  // headerMode: 'none',
+                  header: null,
+                  gesturesEnabled: true
+                  },
+
+  },
   StartProyect: StartProyectScreen,
 });
 
@@ -39,11 +48,16 @@ export default createAppContainer(createBottomTabNavigator(
   //options
   {
 
-    gesturesEnabled: true,
-    headerMode: 'none',
+                  // navigationOptions: {
+                  // title: "Test",
+                  // // headerMode: 'none',
+                  // gesturesEnabled: true
+                  // },
+
     defaultNavigationOptions: ({ navigation }) => ({
+    
 
-
+      // title: "Ovreride",
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
         let IconComponent = Ionicons;
