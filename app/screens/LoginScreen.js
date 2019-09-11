@@ -1,98 +1,71 @@
-import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements'
-// import { LoginButton, AccessToken } from 'react-native-fbsdk';
-import { AsyncStorage } from "react-native"
+import React from 'react';
+
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { StyleSheet,Text, View , Button, Image} from 'react-native';
+// Component for Splash Screen
+
+
+
+const styles = StyleSheet.create({
+  splash: {
+    flex: 1,
+    flexDirection: 'column',
+        // justifyContent: 'center',
+        alignItems: 'center'
+      },
+      title:{
+    // alignSelf: 'flex-start'
+  },
+  image:{
+    width:'100%',
+    height:90
+  },
+  button:{
+    height:10
+  }
+
+});
+
+
 
 export default class LoginScreen extends React.Component {
-
-
-  componentWillMount () {
-  // AccessToken.getCurrentAccessToken().then((data) => {
-  //       if(data) {
-  //         console.log(data.accessToken);
-  //         this.goToHomePage(data.accessToken);
-  //       }
-  //   })
-  }
-
-  goToHomePage(token){
-    this.storeItem(token);
-    this.props.navigation.replace('Tabs');
-  }
-
-  async storeItem(token) {
-    try {
-        var jsonOfItem = await AsyncStorage.setItem('accessToken', token);
-        return jsonOfItem;
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
-
   render() {
 
-    const mainTitle = '@TuGobiernas2019';
-    const secondTitle = 'Votar es un acto inteligente';
-    const urlTitle = 'www.tugobiernas.com';
+
+    const {navigate} = this.props.navigation;
 
     return (
-      <View style={{flex: 1}}>
-        <View style={{flex: 1, height: 300}}>
-         <Image
-          resizeMode="cover"
-          style={{
-            flex: 1,
-            height: undefined, width: undefined
-          }}
-          source={require('../assets/information-intro.png')}
-            />
-        </View>
-        <View style={{ flex: 1, marginTop: 20, alignItems: 'center' }}>
-          <Text style={[styles.textStyle, styles.bold]}>TuGobiernas2019</Text>
-           
-       
+      <View style={styles.splash}>
+      <Text style={styles.title}>Brain Search</Text>
+      <Image  style={styles.image} source={require('../assets/home2.png')} />
 
-           {/*<Button
-           style={{}}
-           fontWeight={'800'}
-           borderRadius={40}
-           backgroundColor={'#e8be58'}
-           icon={{name: 'lock-open'}}
-           title="Login"
-           onPress={() => this.props.navigation.push('Tabs')}
-          />*/}
-        </View>
-        <View style={{ marginTop: 20, alignItems: 'center' }}>
-        
-        </View>
+
+      <View >
+
+      <GoogleSigninButton
+      style={{ width: 192, height: 48 }}
+      size={GoogleSigninButton.Size.Wide}
+      color={GoogleSigninButton.Color.Dark}
+
+      />
       </View>
-    );
+
+{/*          onPress={this._signIn}
+disabled={this.state.isSigninInProgress} */}
+
+
+    <Button
+    title="Ingresar Test" style={styles.button}
+    onPress={() => navigate('Nav', {name: 'Jane'})}
+    />
+
+
+</View>
+);
   }
 }
 
-const styles = StyleSheet.create({
- ralewayFont: {
-  fontFamily: 'Raleway',
-  color: 'white',
-  padding: 10,
- },
- bold: {
-  fontWeight: '800',
- },
-  textStyle: {
-  fontSize: 25,
-  color: '#787878',
-  fontWeight: '500',
-  textAlign: 'center',
-  marginBottom: 15,
- },
-  secondaryTextStyle: {
-  marginTop: 20,
-  fontSize: 20,
-  color: '#ee275d',
-  fontWeight: '500',
-  textAlign: 'center',
- }
-});
+
+

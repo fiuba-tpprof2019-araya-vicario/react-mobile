@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'ReactMobile' do
-  # Pods for ReactMobile
+target 'BrainSearch' do
+  # Pods for BrainSearch
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -27,7 +27,11 @@ target 'ReactMobile' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  target 'ReactMobileTests' do
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'RNGoogleSignin', :path => '../node_modules/react-native-google-signin'
+
+  target 'BrainSearchTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -35,10 +39,10 @@ target 'ReactMobile' do
   use_native_modules!
 end
 
-target 'ReactMobile-tvOS' do
-  # Pods for ReactMobile-tvOS
+target 'BrainSearch-tvOS' do
+  # Pods for BrainSearch-tvOS
 
-  target 'ReactMobile-tvOSTests' do
+  target 'BrainSearch-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
