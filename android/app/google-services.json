@@ -1,43 +1,42 @@
 {
   "project_info": {
-    "project_number": "331509137742",
-    "firebase_url": "https://brainsearch2-fd9aa.firebaseio.com",
-    "project_id": "brainsearch2-fd9aa",
-    "storage_bucket": "brainsearch2-fd9aa.appspot.com"
+    "project_number": "942857236809",
+    "firebase_url": "https://fiuba-tp-1557094314545.firebaseio.com",
+    "project_id": "fiuba-tp-1557094314545",
+    "storage_bucket": "fiuba-tp-1557094314545.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:331509137742:android:1698153a23f02f5b995e1f",
+        "mobilesdk_app_id": "1:942857236809:android:9f979dbc9aaee54421aa98",
         "android_client_info": {
           "package_name": "com.brainsearch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "331509137742-p5mai3ao7bnkaa98m3lkvh9l4oeb9l2n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.brainsearch",
-            "certificate_hash": "21b0978dc1859cb503f5ea81961bce3ba89d7471"
-          }
-        },
-        {
-          "client_id": "331509137742-g16977od8douaqcn3j5cfg39fkua29gn.apps.googleusercontent.com",
+          "client_id": "942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA0y409bwFRE6F0bVgNoWsoufPKGgar3Rk"
+          "current_key": "AIzaSyC8mggWXfPwPYeJnwANz3oYJYbK7XAHcSA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "331509137742-g16977od8douaqcn3j5cfg39fkua29gn.apps.googleusercontent.com",
+              "client_id": "942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "942857236809-1gcb1ff9rjus7mi4th7d2sk79hhli2bs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.BrainSearch"
+              }
             }
           ]
         }
