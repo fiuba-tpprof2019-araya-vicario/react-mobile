@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "331509137742",
+    "firebase_url": "https://brainsearch2-fd9aa.firebaseio.com",
+    "project_id": "brainsearch2-fd9aa",
+    "storage_bucket": "brainsearch2-fd9aa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331509137742:android:1698153a23f02f5b995e1f",
+        "android_client_info": {
+          "package_name": "com.brainsearch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331509137742-p5mai3ao7bnkaa98m3lkvh9l4oeb9l2n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brainsearch",
+            "certificate_hash": "21b0978dc1859cb503f5ea81961bce3ba89d7471"
+          }
+        },
+        {
+          "client_id": "331509137742-g16977od8douaqcn3j5cfg39fkua29gn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0y409bwFRE6F0bVgNoWsoufPKGgar3Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331509137742-g16977od8douaqcn3j5cfg39fkua29gn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

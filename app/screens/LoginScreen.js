@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ Component } from 'react';
 
 // import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
@@ -9,11 +9,10 @@ import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
 
 
 
+GoogleSignin.configure();
 
 
-
-
-export default class LoginScreen extends React.Component {
+export default class LoginScreen extends Component{
 
 
 
@@ -47,7 +46,7 @@ export default class LoginScreen extends React.Component {
     }
   }
 
-    _signIn = async () => {
+  _signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
@@ -63,6 +62,7 @@ export default class LoginScreen extends React.Component {
         Alert.alert('play services not available or outdated');
       } else {
         Alert.alert('Something went wrong', error.toString());
+        console.error('error',error.toString())
         this.setState({
           error,
         });
@@ -103,12 +103,25 @@ title="Ingresar Test" style={styles.button}
 onPress={() => navigate('Nav', {name: 'Chelo'})}
 />
 
+{this.renderError()}
 
 </View>
 );
   }
-}
 
+
+
+  renderError() {
+    const { error } = this.state;
+    if (!error) {
+      return null;
+    }
+    const text = `${error.toString()} ${error.code ? error.code : ''}`;
+    return <Text>{text}</Text>;
+  }
+
+
+}
 
 const styles = StyleSheet.create({
   splash: {
