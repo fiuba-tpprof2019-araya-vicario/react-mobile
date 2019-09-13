@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:942857236809:android:9f979dbc9aaee54421aa98",
+        "mobilesdk_app_id": "1:942857236809:android:27d6659a91af5ac221aa98",
         "android_client_info": {
           "package_name": "com.brainsearch"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "942857236809-6jk5l2fptsvv7u1aonh33k6eqcu0c10c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brainsearch",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
         {
           "client_id": "942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com",
           "client_type": 3
@@ -21,7 +29,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC8mggWXfPwPYeJnwANz3oYJYbK7XAHcSA"
+          "current_key": "AIzaSyCvnb0N1TsYr8NGUsZxBsiEk3IOhE6U8Nc"
         }
       ],
       "services": {

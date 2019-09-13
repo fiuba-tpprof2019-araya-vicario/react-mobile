@@ -29,7 +29,7 @@ export default class LoginScreen extends React.Component {
 
   _configureGoogleSignIn() {
     GoogleSignin.configure({
-      webClientId: '331509137742-g16977od8douaqcn3j5cfg39fkua29gn.apps.googleusercontent.com',
+      webClientId: '942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com',
       offlineAccess: false,
     });
   }
