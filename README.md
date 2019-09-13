@@ -20,4 +20,8 @@ https://facebook.github.io/react-native/docs/getting-started
 
 - Para correrlo en iOS:
 
-``` react-native run-ios ```
+1. Ir a la carpeta ```./ios``` y correr el siguiente comando (en caso de no reconocer el comando pod instalarlo desde la pagina: https://cocoapods.org/):
+
+``` pod install ```
+
+2. Luego abrir en XCode el archivo ```./ios/BrainSearch.xcworkspace``` y correrlo desde el entorno. (ver tema de certificado iOS)
