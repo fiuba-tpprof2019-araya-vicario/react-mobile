@@ -46,6 +46,20 @@ export default class LoginScreen extends Component{
     }
   }
 
+  _signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+
+      this.setState({ userInfo: null, error: null });
+    } catch (error) {
+      this.setState({
+        error,
+      });
+    }
+  };
+
+
   _signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -72,8 +86,15 @@ export default class LoginScreen extends Component{
 
 
 
-  render() {
 
+
+
+  render() {
+    const { userInfo } = this.state;
+
+    const body = userInfo ? this.renderUserInfo(userInfo) : this.renderSignInButton();
+
+ 
 
     const {navigate} = this.props.navigation;
 
@@ -83,31 +104,96 @@ export default class LoginScreen extends Component{
     <Image  style={styles.image} source={require('../assets/home2.png')} />
 
 
-    <View >
-
-    <GoogleSigninButton
-    style={{ width: 192, height: 48 }}
-    size={GoogleSigninButton.Size.Wide}
-    color={GoogleSigninButton.Color.Dark}
-    onPress={this._signIn}
-
-    />
-    </View>
 
 {/*          onPress={this._signIn}
 disabled={this.state.isSigninInProgress} */}
 
 
-<Button
-title="Ingresar Test" style={styles.button}
-onPress={() => navigate('Nav', {name: 'Chelo'})}
-/>
+     <View style={[styles.container, { flex: 1 }]}>
+        {this.renderIsSignedIn()}
+        {this.renderGetCurrentUser()}
+        {this.renderGetTokens()}
+        {body}
+      </View>
 
-{this.renderError()}
+  <Button
+  title="Ingresar Test" style={styles.button}
+  onPress={() => navigate('Nav', {name: 'Chelo'})}
+  />
+
+{/*  {this.renderError()}*/}
 
 </View>
 );
   }
+
+
+  renderIsSignedIn() {
+    return (
+      <Button
+        onPress={async () => {
+          const isSignedIn = await GoogleSignin.isSignedIn();
+          Alert.alert(String(isSignedIn));
+        }}
+        title="is user signed in?"
+      />
+    );
+  }
+
+  renderGetCurrentUser() {
+    return (
+      <Button
+        onPress={async () => {
+          const userInfo = await GoogleSignin.getCurrentUser();
+          Alert.alert('current user', userInfo ? JSON.stringify(userInfo.user) : 'null');
+        }}
+        title="get current user"
+      />
+    );
+  }
+
+
+  renderSignInButton() {
+    return (
+      <View style={styles.container}>
+        <GoogleSigninButton
+          style={{ width: 212, height: 48 }}
+          size={GoogleSigninButton.Size.Standard}
+          color={GoogleSigninButton.Color.Auto}
+          onPress={this._signIn}
+        />
+        {this.renderError()}
+      </View>
+    );
+  }
+
+
+  renderGetTokens() {
+    return (
+      <Button
+        onPress={async () => {
+          const isSignedIn = await GoogleSignin.getTokens();
+          Alert.alert('tokens', JSON.stringify(isSignedIn));
+        }}
+        title="get tokens"
+      />
+    );
+  }
+
+  renderUserInfo(userInfo) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20 }}>
+          Welcome {userInfo.user.name}
+        </Text>
+        <Text>Your user info: {JSON.stringify(userInfo.user)}</Text>
+
+        <Button onPress={this._signOut} title="Log out" />
+        {this.renderError()}
+      </View>
+    );
+  }
+
 
 
 
