@@ -5,11 +5,10 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-goog
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
-// Component for Splash Screen
+
+import { AsyncStorage } from "react-native"
 
 
-
-GoogleSignin.configure();
 
 
 export default class LoginScreen extends Component{
@@ -24,7 +23,29 @@ export default class LoginScreen extends Component{
   async componentDidMount() {
     this._configureGoogleSignIn();
     await this._getCurrentUser();
+  // console.log(AccessToken);
+  // AccessToken.getCurrentAccessToken().then((data) => {
+  //       if(data) {
+  //         console.log(data.accessToken);
+  //         this.goToHomePage(data.accessToken);
+  //       }
+  //   })
+
   }
+  _configureGoogleSignIn() {
+    GoogleSignin.configure({
+      webClientId: '942857236809-1mbatv1f1t1eanl1jqrl6qjdjb0lu174.apps.googleusercontent.com',
+      //la de abajo era la nueva q armo seba
+      // webClientId: '942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com',
+      offlineAccess: false,
+    });
+  }
+
+
+
+
+
+
 
 
     // id_token: response.Zi.id_token,
@@ -36,7 +57,7 @@ export default class LoginScreen extends Component{
     try {
       let  passbody= {
 
-                   id_token: userInfo.idToken,
+        id_token: userInfo.idToken,
         email: userInfo.user.email,
         name: userInfo.user.name
          }
@@ -55,18 +76,27 @@ export default class LoginScreen extends Component{
       let responseJson = await response.json();
       // return responseJson;
       console.log(responseJson);
+      this.goToHomePage(responseJson.token)
     } catch (error) {
       console.error(error);
     }
 }
 
-
-  _configureGoogleSignIn() {
-    GoogleSignin.configure({
-      webClientId: '942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com',
-      offlineAccess: false,
-    });
+  goToHomePage(token){
+    this.storeItem(token);
+    this.props.navigation.navigate('Nav', {name: 'Chelo'})
+    // this.props.navigation.replace('Tabs');
   }
+
+  async storeItem(token) {
+    try {
+        var jsonOfItem = await AsyncStorage.setItem('accessToken', token);
+        return jsonOfItem;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
 
   async _getCurrentUser() {
     try {
@@ -122,22 +152,17 @@ export default class LoginScreen extends Component{
 
 
 
-
-
   render() {
     const { userInfo } = this.state;
 
     const body = userInfo ? this.renderUserInfo(userInfo) : this.renderSignInButton();
 
  
-
-    const {navigate} = this.props.navigation;
+    // const {navigate} = this.props.navigation;
 
     return (
       <View style={styles.splash}>
-    {/*<Text style={styles.title}>Brain Search</Text>*/}
     <Image  style={styles.image} source={require('../assets/home2.png')} />
-
 
 
 {/*          onPress={this._signIn}
