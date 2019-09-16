@@ -26,6 +26,41 @@ export default class LoginScreen extends Component{
     await this._getCurrentUser();
   }
 
+
+    // id_token: response.Zi.id_token,
+    // email: response.profileObj.email,
+    // name: response.profileObj.name
+
+  async loginToServer(userInfo) {
+    console.log(userInfo);
+    try {
+      let  passbody= {
+
+                   id_token: userInfo.idToken,
+        email: userInfo.user.email,
+        name: userInfo.user.name
+         }
+
+         console.log('body',passbody);
+
+
+      let response = await fetch(
+        'http://10.0.2.2:3050/v0/api/auth',
+        {
+         method: 'post',
+         headers: {'Content-Type':'application/json'},
+         body: JSON.stringify(passbody)
+       }
+      );
+      let responseJson = await response.json();
+      // return responseJson;
+      console.log(responseJson);
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+
   _configureGoogleSignIn() {
     GoogleSignin.configure({
       webClientId: '942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com',
@@ -118,8 +153,12 @@ disabled={this.state.isSigninInProgress} */}
 
   <Button
   title="Ingresar Test" style={styles.button}
-  onPress={() => navigate('Nav', {name: 'Chelo'})}
+  onPress={ () => this.loginToServer(userInfo)}
+
+
   />
+
+  {/*    () => navigate('Nav', {name: 'Chelo'})*/}
 
 {/*  {this.renderError()}*/}
 
