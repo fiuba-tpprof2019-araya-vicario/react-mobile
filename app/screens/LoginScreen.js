@@ -5,6 +5,7 @@ import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
 
 import config from '../config/config'
 import tokenProvider from '../providers/tokenProvider'
+import apiProvider from '../providers/apiProvider'
 
 
 
@@ -38,32 +39,9 @@ export default class LoginScreen extends Component{
   }
 
   async loginToServer(userInfo) {
-    console.log(userInfo);
-    try {
-      let  passbody= {
-
-        id_token: userInfo.idToken,
-        email: userInfo.user.email,
-        name: userInfo.user.name
-         }
-         console.log('login in request:',passbody);
-
-
-      let response = await fetch(
-        'http://10.0.2.2:3050/v0/api/auth',
-        {
-         method: 'post',
-         headers: {'Content-Type':'application/json'},
-         body: JSON.stringify(passbody)
-       }
-      );
-      let responseJson = await response.json();
+      let responseJson = await apiProvider.login(userInfo);
       console.log('responseJson',responseJson);
       this.goToHomePage(responseJson.token)
-    } 
-    catch (error) {
-      console.error(error);
-    }
 }
 
   goToHomePage(token){
