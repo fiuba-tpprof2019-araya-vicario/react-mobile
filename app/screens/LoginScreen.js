@@ -1,12 +1,7 @@
 import React ,{ Component } from 'react';
-
-// import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
-
-
 
 import config from '../config/config'
 import tokenProvider from '../providers/tokenProvider'
@@ -15,40 +10,25 @@ import tokenProvider from '../providers/tokenProvider'
 
 export default class LoginScreen extends Component{
 
-
-
   state = {
     userInfo: null,
     error: null,
   };
 
   async componentDidMount() {
-    this._configureGoogleSignIn();
-    await this._getCurrentUser();
-  // console.log(AccessToken);
-  // AccessToken.getCurrentAccessToken().then((data) => {
-  //       if(data) {
-  //         console.log(data.accessToken);
-  //         this.goToHomePage(data.accessToken);
-  //       }
-  //   })
-
-  }
-
-
-  _configureGoogleSignIn() {
     GoogleSignin.configure(config.google);
+    await this.getLoggedInUser();
   }
 
 
-  async _getCurrentUser() {
+  async getLoggedInUser() {
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({ userInfo, error: null });
+      await this.loginToServer(userInfo);
       this.goToHomePage(userInfo);
     } 
     catch (error) {
-      
       if(error.code != statusCodes.SIGN_IN_REQUIRED){
             this.setState({
         error: new Error( error.message),
@@ -56,7 +36,6 @@ export default class LoginScreen extends Component{
       }
     }
   }
-
 
   async loginToServer(userInfo) {
     console.log(userInfo);
@@ -79,7 +58,7 @@ export default class LoginScreen extends Component{
        }
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+      console.log('responseJson',responseJson);
       this.goToHomePage(responseJson.token)
     } 
     catch (error) {
@@ -94,11 +73,12 @@ export default class LoginScreen extends Component{
 
 
 
-  _signIn = async () => {
+  signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({ userInfo, error: null });
+      this.loginToServer(userInfo);
       this.goToHomePage(userInfo);
     } 
     catch (error) {
@@ -133,8 +113,8 @@ export default class LoginScreen extends Component{
       <Image  style={styles.image} source={require('../assets/home2.png')} />
 
 
-{/*          onPress={this._signIn}
-disabled={this.state.isSigninInProgress} */}
+      {/*          onPress={this._signIn}
+      disabled={this.state.isSigninInProgress} */}
 
 
      <View style={[styles.container, { flex: 1 }]}>
@@ -144,17 +124,17 @@ disabled={this.state.isSigninInProgress} */}
         {body}
       </View>
 
-{/*  <Button
-  title="Ingresar Test" style={styles.button}
-  onPress={ () => this.loginToServer(userInfo)}
-  />*/}
+      {/*  <Button
+        title="Ingresar Test" style={styles.button}
+        onPress={ () => this.loginToServer(userInfo)}
+        />*/}
 
-  {/*    () => navigate('Nav', {name: 'Chelo'})*/}
+        {/*    () => navigate('Nav', {name: 'Chelo'})*/}
 
-{/*  {this.renderError()}*/}
+      {/*  {this.renderError()}*/}
 
-</View>
-);
+    </View>
+    );
   }
 
 
@@ -190,7 +170,7 @@ disabled={this.state.isSigninInProgress} */}
           style={{ width: 212, height: 48,marginTop:100 }}
           size={GoogleSigninButton.Size.Standard}
           color={GoogleSigninButton.Color.Auto}
-          onPress={this._signIn}
+          onPress={this.signIn}
         />
         {this.renderError()}
       </View>
