@@ -6,8 +6,10 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-goog
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
 
-import { AsyncStorage } from "react-native"
 
+
+import config from '../config/config'
+import tokenProvider from '../providers/tokenProvider'
 
 
 
@@ -32,25 +34,29 @@ export default class LoginScreen extends Component{
   //   })
 
   }
+
+
   _configureGoogleSignIn() {
-    GoogleSignin.configure({
-      webClientId: '942857236809-1mbatv1f1t1eanl1jqrl6qjdjb0lu174.apps.googleusercontent.com',
-      //la de abajo era la nueva q armo seba
-      // webClientId: '942857236809-2qjq91t6661aqo83kfraeffcdb10dg42.apps.googleusercontent.com',
-      offlineAccess: false,
-    });
+    GoogleSignin.configure(config.google);
   }
 
 
+  async _getCurrentUser() {
+    try {
+      const userInfo = await GoogleSignin.signInSilently();
+      this.setState({ userInfo, error: null });
+      this.goToHomePage(userInfo);
+    } 
+    catch (error) {
+      
+      if(error.code != statusCodes.SIGN_IN_REQUIRED){
+            this.setState({
+        error: new Error( error.message),
+      });
+      }
+    }
+  }
 
-
-
-
-
-
-    // id_token: response.Zi.id_token,
-    // email: response.profileObj.email,
-    // name: response.profileObj.name
 
   async loginToServer(userInfo) {
     console.log(userInfo);
@@ -61,8 +67,7 @@ export default class LoginScreen extends Component{
         email: userInfo.user.email,
         name: userInfo.user.name
          }
-
-         console.log('body',passbody);
+         console.log('login in request:',passbody);
 
 
       let response = await fetch(
@@ -74,55 +79,19 @@ export default class LoginScreen extends Component{
        }
       );
       let responseJson = await response.json();
-      // return responseJson;
       console.log(responseJson);
       this.goToHomePage(responseJson.token)
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(error);
     }
 }
 
   goToHomePage(token){
-    this.storeItem(token);
+    tokenProvider.storeToken(token);
     this.props.navigation.navigate('Nav', {name: 'Chelo'})
-    // this.props.navigation.replace('Tabs');
   }
 
-  async storeItem(token) {
-    try {
-        var jsonOfItem = await AsyncStorage.setItem('accessToken', token);
-        return jsonOfItem;
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
-
-  async _getCurrentUser() {
-    try {
-      const userInfo = await GoogleSignin.signInSilently();
-      this.setState({ userInfo, error: null });
-    } catch (error) {
-      const errorMessage =
-      error.code === statusCodes.SIGN_IN_REQUIRED ? 'Please sign in :)' : error.message;
-      this.setState({
-        error: new Error(errorMessage),
-      });
-    }
-  }
-
-  _signOut = async () => {
-    try {
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-
-      this.setState({ userInfo: null, error: null });
-    } catch (error) {
-      this.setState({
-        error,
-      });
-    }
-  };
 
 
   _signIn = async () => {
@@ -130,16 +99,19 @@ export default class LoginScreen extends Component{
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({ userInfo, error: null });
-    } catch (error) {
+      this.goToHomePage(userInfo);
+    } 
+    catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // sign in was cancelled
         Alert.alert('cancelled');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation in progress already
+      } 
+      else if (error.code === statusCodes.IN_PROGRESS) {
         Alert.alert('in progress');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } 
+      else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
         Alert.alert('play services not available or outdated');
-      } else {
+      } 
+      else {
         Alert.alert('Something went wrong', error.toString());
         console.error('error',error.toString())
         this.setState({
@@ -151,18 +123,14 @@ export default class LoginScreen extends Component{
 
 
 
-
   render() {
     const { userInfo } = this.state;
 
     const body = userInfo ? this.renderUserInfo(userInfo) : this.renderSignInButton();
 
- 
-    // const {navigate} = this.props.navigation;
-
     return (
       <View style={styles.splash}>
-    <Image  style={styles.image} source={require('../assets/home2.png')} />
+      <Image  style={styles.image} source={require('../assets/home2.png')} />
 
 
 {/*          onPress={this._signIn}
@@ -170,18 +138,16 @@ disabled={this.state.isSigninInProgress} */}
 
 
      <View style={[styles.container, { flex: 1 }]}>
-        {this.renderIsSignedIn()}
-        {this.renderGetCurrentUser()}
-        {this.renderGetTokens()}
+        {/*{this.renderIsSignedIn()}*/}
+        {/*{this.renderGetCurrentUser()}*/}
+        {/*{this.renderGetTokens()}*/}
         {body}
       </View>
 
-  <Button
+{/*  <Button
   title="Ingresar Test" style={styles.button}
   onPress={ () => this.loginToServer(userInfo)}
-
-
-  />
+  />*/}
 
   {/*    () => navigate('Nav', {name: 'Chelo'})*/}
 
@@ -221,7 +187,7 @@ disabled={this.state.isSigninInProgress} */}
     return (
       <View style={styles.container}>
         <GoogleSigninButton
-          style={{ width: 212, height: 48 }}
+          style={{ width: 212, height: 48,marginTop:100 }}
           size={GoogleSigninButton.Size.Standard}
           color={GoogleSigninButton.Color.Auto}
           onPress={this._signIn}
@@ -250,7 +216,7 @@ disabled={this.state.isSigninInProgress} */}
         <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20 }}>
           Welcome {userInfo.user.name}
         </Text>
-        <Text>Your user info: {JSON.stringify(userInfo.user)}</Text>
+        {/*<Text>Your user info: {JSON.stringify(userInfo.user)}</Text>*/}
 
         <Button onPress={this._signOut} title="Log out" />
         {this.renderError()}
@@ -289,6 +255,9 @@ const styles = StyleSheet.create({
   },
   button:{
     height:10
+  },
+  googleButton:{
+    paddingTop:50
   }
 
 });
