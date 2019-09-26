@@ -38,7 +38,7 @@ const HomeIconWithBadge = props => {
 //'Mi Proyecto',Solicitudes ,Ideas,Requer,Perfil
 export default createAppContainer(createBottomTabNavigator(
 {
-  'Mi Proyecto': MyProyectStack,
+  'Mi Proyecto': MyProyectScreen,
   Solicitudes: RequestScreen,
   Ideas: IdeasScreen,
   Requer: RequirementScreen,
