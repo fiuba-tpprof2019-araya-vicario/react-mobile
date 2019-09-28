@@ -8,7 +8,7 @@ const config = {
 
 
   api: {
-  	url:'http://10.0.2.2:3050'
+  	url:'https://brain-search-api.herokuapp.com'
   }
 };
 
