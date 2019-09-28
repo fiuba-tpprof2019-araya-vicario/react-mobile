@@ -40,7 +40,7 @@ export default class LoginScreen extends Component{
 
   async loginToServer(userInfo) {
       let responseJson = await apiProvider.login(userInfo);
-      console.log('responseJson',responseJson);
+      console.log('response from Seba Server:',responseJson);
       this.goToHomePage(responseJson.token)
 }
 

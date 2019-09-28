@@ -5,6 +5,8 @@ import LoginScreen from './app/screens/LoginScreen'
 import Nav from './app/screens/Nav'
 
 
+console.disableYellowBox = true;
+
 const NavStack = createStackNavigator({ Nav:
                 { screen: Nav,     
 
