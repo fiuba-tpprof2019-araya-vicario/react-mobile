@@ -79,7 +79,23 @@ const apiProvider = {
 
   },
 
+  getMyProject: async function(){
+    let currentProject =  await this._get('/projects/students/');
+    // console.log('proyect that I participate:',currentProject);
+    if(currentProject.data.Creations.length==0 
+      && currentProject.data.Participations.length==0)
+      return null;
+    let projectId;
+     if(currentProject.data.Participations.length==0)
+       projectId= currentProject.data.Creations[0].id;
+     else projectId= currentProject.data.Participations[0].id;
 
+
+    let project = await this._get('/projects/'+projectId);
+    console.log('apiProvider:project:',project);
+    return project.data;
+
+  },
   getStudents: async function(){
     return this._get('/users?type=student');
   },

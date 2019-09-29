@@ -1,15 +1,6 @@
 
 import React, { Component } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  Button,
-  View,
-  SafeAreaView,Picker
-} from 'react-native';
-
+import {ScrollView,StyleSheet,Text,TextInput,Button,View,SafeAreaView,Picker} from 'react-native';
 import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import apiProvider from '../providers/apiProvider'
@@ -34,7 +25,7 @@ export default class MyProyectScreen extends React.Component {
     ],
   }]
 
-    state = {
+  state = {
     visibleModalId: null,
     selectedItems: [],
     selectedStudent: [],
@@ -43,14 +34,16 @@ export default class MyProyectScreen extends React.Component {
     selectedType: [],
     title:"",
     description:"",
-    fileUrl:""
+    fileUrl:"",
+    project:null,
   };
 
   async componentDidMount() {
     await this.getStudents();
     await this.getTutors();
     await this.getCareers();
-  }
+    await this.updateProject();
+  };
 
   onProyectTypeSelect = (selectedType) => {
     console.log('selectedType',selectedType)
@@ -68,6 +61,11 @@ export default class MyProyectScreen extends React.Component {
     console.log('selectedCarreer',selectedCarreer)
     this.setState({ selectedCarreer });
   };
+
+  async updateProject(){
+    const project = await apiProvider.getMyProject();
+    this.setState({ project });
+  }
 
   async _createUserSelector(collection,responseJson){
     // let responseJson = ;
@@ -100,12 +98,24 @@ export default class MyProyectScreen extends React.Component {
   }
 
   async createIdea(){
-      let createResponse = await apiProvider.createIdea(this.state);
-      console.log('createdIdea:',createResponse)
-      this.setState({ visibleModal: null })
+    let createResponse = await apiProvider.createIdea(this.state);
+    console.log('createdIdea:',createResponse)
+    this.setState({ visibleModal: null })
+    await this.updateProject();
   }
 
 
+  handleOnScroll = event => {
+    this.setState({
+      scrollOffset: event.nativeEvent.contentOffset.y,
+    });
+  };
+
+  handleScrollTo = p => {
+    if (this.scrollViewRef) {
+      this.scrollViewRef.scrollTo(p);
+    }
+  };
 
 
   renderModalContent = () => (
@@ -116,11 +126,8 @@ export default class MyProyectScreen extends React.Component {
     scrollEventThrottle={10}
     >
 
-
     <View style={styles.content}>
     <Text style={styles.contentTitle}>Crea un nuevo Proyecto 👋</Text>
-
-
 
     <Text>Titulo:</Text>
     <TextInput
@@ -143,8 +150,6 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedType}
     />
 
-
-
     <Text>Co Autores:</Text>
     <SectionedMultiSelect
     items={this.students}
@@ -157,7 +162,6 @@ export default class MyProyectScreen extends React.Component {
     onSelectedItemsChange={this.onStudentSelect}
     selectedItems={this.state.selectedStudent}
     />
-
 
     <Text>Tutor:</Text>
     <SectionedMultiSelect
@@ -172,7 +176,6 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedTutor}
     />
 
-
     <Text>Carreras:</Text>
     <SectionedMultiSelect
     items={this.careers}
@@ -185,7 +188,6 @@ export default class MyProyectScreen extends React.Component {
     onSelectedItemsChange={this.onCarreerSelect}
     selectedItems={this.state.selectedCarreer}
     />
-
 
     <Text>Descripcion:</Text>
     <TextInput
@@ -203,23 +205,33 @@ export default class MyProyectScreen extends React.Component {
     </View>
 
     </ScrollView>
+
     );
 
-  handleOnScroll = event => {
-    this.setState({
-      scrollOffset: event.nativeEvent.contentOffset.y,
-    });
-  };
-
-  handleScrollTo = p => {
-    if (this.scrollViewRef) {
-      this.scrollViewRef.scrollTo(p);
+  renderProjectInfo() {
+    const { project } = this.state;
+    if (!project) {
+      return null;
     }
-  };
+    return(
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>{"Tu proyecto id:"+project.id}</Text>
+      <Text>{project.name}</Text>
+      <Text>{project.description}</Text>
+      <Text>{project.Creator.name+" "+project.Creator.surname}</Text>
+      <Text>{project.Tutor.name+" "+project.Tutor.surname}</Text>
+      </View>
+      )
+  }
 
-  render() {
-    return (
-      <View style={styles.container}>
+  renderCreateProject() {
+    const { project } = this.state;
+    if (project) {
+      return null;
+    }
+
+    return(
+      <View>
       <Button
       onPress={() => this.setState({ visibleModal: 'backdropPress' })}
       title="Crear Nuevo Proyecto"
@@ -227,14 +239,26 @@ export default class MyProyectScreen extends React.Component {
       <Modal
       isVisible={this.state.visibleModal === 'backdropPress'}
       onBackdropPress={() => this.setState({ visibleModal: null })}
-
       >
       {this.renderModalContent()}
       </Modal>
+
+      </View>
+      )
+
+  }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+      {this.renderProjectInfo()}
+      {this.renderCreateProject()}
       </View>
       );
-  }
+  };
 }
+
 
 
 const styles = StyleSheet.create({

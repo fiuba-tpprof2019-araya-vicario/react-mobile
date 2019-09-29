@@ -46,7 +46,9 @@ export default class LoginScreen extends Component{
 
   goToHomePage(serverUser){
     tokenProvider.storeToken(serverUser.data.token);
-    this.props.navigation.navigate('Nav', {name: 'Chelo'})
+    this.props.navigation.navigate('Nav', 
+      { name: serverUser.data.name,
+        projectId: serverUser.data.projectId})
   }
 
 
