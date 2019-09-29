@@ -63,20 +63,20 @@ const apiProvider = {
 
 
 
-  createIdea: async function(){
+  createIdea: async function(idea){
+    
+     let body ={
+         "name":idea.title,
+         "description":idea.description,
+         "students":idea.selectedStudent,
+         "tutor_id":idea.selectedTutor[0],
+         "cotutors":idea.selectedTutor,
+         "careers": idea.selectedCarreer,
+         "type_id": idea.selectedType[0],
+     }
+    console.log('posting new project',body)
+     return this._post("/projects",body);
 
-//   {
-//   "name": "tp-prueba",
-//   "description": "descripcion tp-prueba",
-//   "proposal_url": "https://drive.google.com/file/d/1Z2B-Ro66RmOuAKQ2U0_oVRYfzKPdwxG1/view?usp=sharing",
-//   "type_id": 1,
-//   "students": [8],
-//   "tutor_id": 9,
-//   "cotutors": [4,7],
-//   "careers": [2,3]
-// }
-
-    return this._post('/projects',{});
   },
 
 

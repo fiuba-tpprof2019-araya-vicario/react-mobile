@@ -34,6 +34,18 @@ export default class MyProyectScreen extends React.Component {
     ],
   }]
 
+    state = {
+    visibleModalId: null,
+    selectedItems: [],
+    selectedStudent: [],
+    selectedTutor: [],
+    selectedCarreer: [],
+    selectedType: [],
+    title:"",
+    description:"",
+    fileUrl:""
+  };
+
   async componentDidMount() {
     await this.getStudents();
     await this.getTutors();
@@ -57,8 +69,8 @@ export default class MyProyectScreen extends React.Component {
     this.setState({ selectedCarreer });
   };
 
-  async _createUserSelector(collection,method){
-    let responseJson = await method();
+  async _createUserSelector(collection,responseJson){
+    // let responseJson = ;
     let serverStudents = responseJson.data;
     for (var i = serverStudents.length - 1; i >= 0; i--) {
       collection[0].children.push({
@@ -69,11 +81,11 @@ export default class MyProyectScreen extends React.Component {
   }
 
   async getStudents() {
-    return _createUserSelector(this.students,apiProvider.getStudents);
+    return this._createUserSelector(this.students,await apiProvider.getStudents());
   }
 
   async getTutors() {
-    return _createUserSelector(this.tutors,apiProvider.getTutors);
+    return this._createUserSelector(this.tutors,await apiProvider.getTutors());
   }
 
   async getCareers() {
@@ -87,15 +99,14 @@ export default class MyProyectScreen extends React.Component {
     }
   }
 
+  async createIdea(){
+      let createResponse = await apiProvider.createIdea(this.state);
+      console.log('createdIdea:',createResponse)
+      this.setState({ visibleModal: null })
+  }
 
-  state = {
-    visibleModalId: null,
-    selectedItems: [],
-    selectedStudent: [],
-    selectedTutor: [],
-    selectedCarreer: [],
-    selectedType: [],
-  };
+
+
 
   renderModalContent = () => (
 
@@ -114,9 +125,9 @@ export default class MyProyectScreen extends React.Component {
     <Text>Titulo:</Text>
     <TextInput
     style={{ height: 40, borderColor: 'gray', borderWidth: 0.5 }}
-    onChangeText={(name) => this.setState({name})}
+    onChangeText={(title) => this.setState({title})}
     placeholder="Ingrese el titulo para tu idea"
-    value={this.state.name}
+    value={this.state.title}
     />
 
     <Text>Tipo de Proyecto:</Text>
@@ -185,8 +196,8 @@ export default class MyProyectScreen extends React.Component {
     />                                                                        
 
     <Button
-    onPress={() => this.setState({ visibleModal: null })}
-    title="Close"
+    onPress={() => {this.createIdea();}}
+    title="Crear Proyecto"
     />
 
     </View>

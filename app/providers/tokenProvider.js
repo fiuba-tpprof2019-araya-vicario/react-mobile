@@ -17,7 +17,7 @@ const tokenProvider = {
     const value = await AsyncStorage.getItem('accessToken');
     if (value !== null) {
       // We have data!!
-      console.log('getToken',value);
+      // console.log('getToken',value);
       return value;
     }
   }
