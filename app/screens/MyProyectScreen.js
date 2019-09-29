@@ -24,105 +24,77 @@ export default class MyProyectScreen extends React.Component {
   tutors = [{name: 'Tutores',id: 1,children: []}];
   careers = [{name: 'Carreras',id: 2,children: []}];
 
+  type_proyect = [{
+    name: 'Tipo de Proyectos',
+    id: 3,
+    children: [
+    {name: 'Trabajo Profesional',id: 1},
+    {name: 'Tesis',id: 2},
+    {name: 'Trabajo Practico',id: 3}
+    ],
+  }]
 
   async componentDidMount() {
-     await this.getStudents();
-     await this.getTutors();
-     await this.getCareers();
+    await this.getStudents();
+    await this.getTutors();
+    await this.getCareers();
   }
 
   onProyectTypeSelect = (selectedType) => {
     console.log('selectedType',selectedType)
     this.setState({ selectedType });
   };
-   onStudentSelect = (selectedStudent) => {
+  onStudentSelect = (selectedStudent) => {
     console.log('selectedStudent',selectedStudent)
     this.setState({ selectedStudent });
   };
-   onTutorSelect = (selectedTutor) => {
+  onTutorSelect = (selectedTutor) => {
     console.log('selectedTutor',selectedTutor)
     this.setState({ selectedTutor });
   };
-   onCarreerSelect = (selectedCarreer) => {
+  onCarreerSelect = (selectedCarreer) => {
     console.log('selectedCarreer',selectedCarreer)
     this.setState({ selectedCarreer });
   };
 
-  async getStudents() {
-      let responseJson = await apiProvider.getStudents();
-      let serverStudents = responseJson.data;
-      console.log('serverStudents:',serverStudents);
-      for (var i = serverStudents.length - 1; i >= 0; i--) {
-        
-        this.students[0].children.push({
-          "name":serverStudents[i].name+" "+serverStudents[i].surname,
-          "id":serverStudents[i].id
-        })
-      }
-}
-  async getTutors() {
-      let responseJson = await apiProvider.getTutors();
-      let serverStudents = responseJson.data;
-      console.log('serverStudents:',serverStudents);
-      for (var i = serverStudents.length - 1; i >= 0; i--) {
-        
-        this.tutors[0].children.push({
-          "name":serverStudents[i].name+" "+serverStudents[i].surname,
-          "id":serverStudents[i].id
-        })
-      }
-}
+  async _createUserSelector(collection,method){
+    let responseJson = await method();
+    let serverStudents = responseJson.data;
+    for (var i = serverStudents.length - 1; i >= 0; i--) {
+      collection[0].children.push({
+        "name":serverStudents[i].name+" "+serverStudents[i].surname,
+        "id":serverStudents[i].id
+      })
+    }    
+  }
 
+  async getStudents() {
+    return _createUserSelector(this.students,apiProvider.getStudents);
+  }
+
+  async getTutors() {
+    return _createUserSelector(this.tutors,apiProvider.getTutors);
+  }
 
   async getCareers() {
-      let responseJson = await apiProvider.getCareers();
-      let serverCareers = responseJson.data;
-      console.log('carreers:',serverCareers);
-      for (var i = serverCareers.length - 1; i >= 0; i--) {
-        
-        this.careers[0].children.push({
-          "name":serverCareers[i].name,
-          "id":serverCareers[i].id
-        })
-      }
-}
-
-
-
-
-   tipo_test = [
-  // this is the parent or 'item'
-  {
-    name: 'Tipo de Proyectos',
-    id: 99,
-    // these are the children or 'sub items'
-    children: [
-      {
-        name: 'Trabajo Profesional',
-        id: 2001,
-      },
-      {
-        name: 'Tesis',
-        id: 2002,
-      },
-      {
-        name: 'Trabajo Practico',
-        id: 2003,
-      }
-    ],
-  }]
-
-
-
+    let responseJson = await apiProvider.getCareers();
+    let serverCareers = responseJson.data;
+    for (var i = serverCareers.length - 1; i >= 0; i--) {
+      this.careers[0].children.push({
+        "name":serverCareers[i].name,
+        "id":serverCareers[i].id
+      })
+    }
+  }
 
 
   state = {
-          visibleModalId: null,
-          selectedItems: [],
-          selectedStudent: [],
-          selectedTutor: [],
-          selectedCarreer: [],
-          selectedType: [],
+    visibleModalId: null,
+    selectedItems: [],
+    selectedStudent: [],
+    selectedTutor: [],
+    selectedCarreer: [],
+    selectedType: [],
   };
 
   renderModalContent = () => (
@@ -135,87 +107,87 @@ export default class MyProyectScreen extends React.Component {
 
 
     <View style={styles.content}>
-      <Text style={styles.contentTitle}>Crea un nuevo Proyecto 👋</Text>
+    <Text style={styles.contentTitle}>Crea un nuevo Proyecto 👋</Text>
 
 
 
-      <Text>Titulo:</Text>
-      <TextInput
-      style={{ height: 40, borderColor: 'gray', borderWidth: 0.5 }}
-      onChangeText={(name) => this.setState({name})}
-      placeholder="Ingrese el titulo para tu idea"
-      value={this.state.name}
-      />
+    <Text>Titulo:</Text>
+    <TextInput
+    style={{ height: 40, borderColor: 'gray', borderWidth: 0.5 }}
+    onChangeText={(name) => this.setState({name})}
+    placeholder="Ingrese el titulo para tu idea"
+    value={this.state.name}
+    />
 
-      <Text>Tipo de Proyecto:</Text>
-       <SectionedMultiSelect
-          items={this.tipo_test}
-          uniqueKey="id"
-          subKey="children"
-          selectText="Tipo:"
-          single="true"
-          showDropDowns={false}
-          readOnlyHeadings={true}
-          onSelectedItemsChange={this.onProyectTypeSelect}
-          selectedItems={this.state.selectedType}
-        />
-
-
-
-      <Text>Co Autores:</Text>
-        <SectionedMultiSelect
-          items={this.students}
-          uniqueKey="id"
-          subKey="children"
-          style={styles.picker}
-          selectText="Co Autores:"
-          showDropDowns={false}
-          readOnlyHeadings={true}
-          onSelectedItemsChange={this.onStudentSelect}
-          selectedItems={this.state.selectedStudent}
-        />
+    <Text>Tipo de Proyecto:</Text>
+    <SectionedMultiSelect
+    items={this.type_proyect}
+    uniqueKey="id"
+    subKey="children"
+    selectText="Tipo:"
+    single="true"
+    showDropDowns={false}
+    readOnlyHeadings={true}
+    onSelectedItemsChange={this.onProyectTypeSelect}
+    selectedItems={this.state.selectedType}
+    />
 
 
-      <Text>Tutor:</Text>
-        <SectionedMultiSelect
-          items={this.tutors}
-          uniqueKey="id"
-          subKey="children"
-          style={styles.picker}
-          selectText="Tutores:"
-          showDropDowns={false}
-          readOnlyHeadings={true}
-          onSelectedItemsChange={this.onTutorSelect}
-          selectedItems={this.state.selectedTutor}
-        />
+
+    <Text>Co Autores:</Text>
+    <SectionedMultiSelect
+    items={this.students}
+    uniqueKey="id"
+    subKey="children"
+    style={styles.picker}
+    selectText="Co Autores:"
+    showDropDowns={false}
+    readOnlyHeadings={true}
+    onSelectedItemsChange={this.onStudentSelect}
+    selectedItems={this.state.selectedStudent}
+    />
 
 
-      <Text>Carreras:</Text>
-        <SectionedMultiSelect
-          items={this.careers}
-          uniqueKey="id"
-          subKey="children"
-          style={styles.picker}
-          selectText="Carreras:"
-          showDropDowns={false}
-          readOnlyHeadings={true}
-          onSelectedItemsChange={this.onCarreerSelect}
-          selectedItems={this.state.selectedCarreer}
-        />
+    <Text>Tutor:</Text>
+    <SectionedMultiSelect
+    items={this.tutors}
+    uniqueKey="id"
+    subKey="children"
+    style={styles.picker}
+    selectText="Tutores:"
+    showDropDowns={false}
+    readOnlyHeadings={true}
+    onSelectedItemsChange={this.onTutorSelect}
+    selectedItems={this.state.selectedTutor}
+    />
 
 
-      <Text>Descripcion:</Text>
-      <TextInput
-      style={{ width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5 }}
-      onChangeText={(description) => this.setState({description})}
-      placeholder="Descrpcion de la idea"
-      value={this.state.description}
-      />                                                                        
+    <Text>Carreras:</Text>
+    <SectionedMultiSelect
+    items={this.careers}
+    uniqueKey="id"
+    subKey="children"
+    style={styles.picker}
+    selectText="Carreras:"
+    showDropDowns={false}
+    readOnlyHeadings={true}
+    onSelectedItemsChange={this.onCarreerSelect}
+    selectedItems={this.state.selectedCarreer}
+    />
 
-      <Button
-      onPress={() => this.setState({ visibleModal: null })}
-      title="Close"
-      />
+
+    <Text>Descripcion:</Text>
+    <TextInput
+    style={{ width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5 }}
+    onChangeText={(description) => this.setState({description})}
+    placeholder="Descrpcion de la idea"
+    value={this.state.description}
+    />                                                                        
+
+    <Button
+    onPress={() => this.setState({ visibleModal: null })}
+    title="Close"
+    />
 
     </View>
 
@@ -270,8 +242,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   picker:{
-  height: 50, 
-  width: 200
+    height: 50, 
+    width: 200
   },
   contentTitle: {
     fontSize: 20,

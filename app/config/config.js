@@ -8,7 +8,7 @@ const config = {
 
 
   api: {
-  	url:'https://brain-search-api.herokuapp.com'
+  	url:'https://brain-search-api.herokuapp.com/v0/api'
   }
 };
 
