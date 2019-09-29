@@ -26,8 +26,8 @@ export default class LoginScreen extends Component{
     try {
       const userInfo = await GoogleSignin.signInSilently();
       this.setState({ userInfo, error: null });
-      await this.loginToServer(userInfo);
-      this.goToHomePage(userInfo);
+      let serverUser = await this.loginToServer(userInfo);
+      this.goToHomePage(serverUser);
     } 
     catch (error) {
       if(error.code != statusCodes.SIGN_IN_REQUIRED){
@@ -41,11 +41,11 @@ export default class LoginScreen extends Component{
   async loginToServer(userInfo) {
       let responseJson = await apiProvider.login(userInfo);
       console.log('response from Seba Server:',responseJson);
-      this.goToHomePage(responseJson.token)
+      return responseJson;
 }
 
-  goToHomePage(token){
-    tokenProvider.storeToken(token);
+  goToHomePage(serverUser){
+    tokenProvider.storeToken(serverUser.data.token);
     this.props.navigation.navigate('Nav', {name: 'Chelo'})
   }
 
@@ -56,8 +56,8 @@ export default class LoginScreen extends Component{
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       this.setState({ userInfo, error: null });
-      this.loginToServer(userInfo);
-      this.goToHomePage(userInfo);
+      let serverUser = await this.loginToServer(userInfo);
+      this.goToHomePage(serverUser);
     } 
     catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

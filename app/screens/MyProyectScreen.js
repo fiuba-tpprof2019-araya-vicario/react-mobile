@@ -11,12 +11,86 @@ import {
 } from 'react-native';
 
 import Modal from 'react-native-modal';
-
-// import CustomMultiPicker from "react-native-multiple-select-list";
-// import Autocomplete from 'react-native-autocomplete-input';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import apiProvider from '../providers/apiProvider'
 
-const tipo_test = [
+
+
+
+
+export default class MyProyectScreen extends React.Component {
+
+  students = [{name: 'Alumnos',id: 0,children: []}];
+  tutors = [{name: 'Tutores',id: 1,children: []}];
+  careers = [{name: 'Carreras',id: 2,children: []}];
+
+
+  async componentDidMount() {
+     await this.getStudents();
+     await this.getTutors();
+     await this.getCareers();
+  }
+
+  onProyectTypeSelect = (selectedType) => {
+    console.log('selectedType',selectedType)
+    this.setState({ selectedType });
+  };
+   onStudentSelect = (selectedStudent) => {
+    console.log('selectedStudent',selectedStudent)
+    this.setState({ selectedStudent });
+  };
+   onTutorSelect = (selectedTutor) => {
+    console.log('selectedTutor',selectedTutor)
+    this.setState({ selectedTutor });
+  };
+   onCarreerSelect = (selectedCarreer) => {
+    console.log('selectedCarreer',selectedCarreer)
+    this.setState({ selectedCarreer });
+  };
+
+  async getStudents() {
+      let responseJson = await apiProvider.getStudents();
+      let serverStudents = responseJson.data;
+      console.log('serverStudents:',serverStudents);
+      for (var i = serverStudents.length - 1; i >= 0; i--) {
+        
+        this.students[0].children.push({
+          "name":serverStudents[i].name+" "+serverStudents[i].surname,
+          "id":serverStudents[i].id
+        })
+      }
+}
+  async getTutors() {
+      let responseJson = await apiProvider.getTutors();
+      let serverStudents = responseJson.data;
+      console.log('serverStudents:',serverStudents);
+      for (var i = serverStudents.length - 1; i >= 0; i--) {
+        
+        this.tutors[0].children.push({
+          "name":serverStudents[i].name+" "+serverStudents[i].surname,
+          "id":serverStudents[i].id
+        })
+      }
+}
+
+
+  async getCareers() {
+      let responseJson = await apiProvider.getCareers();
+      let serverCareers = responseJson.data;
+      console.log('carreers:',serverCareers);
+      for (var i = serverCareers.length - 1; i >= 0; i--) {
+        
+        this.careers[0].children.push({
+          "name":serverCareers[i].name,
+          "id":serverCareers[i].id
+        })
+      }
+}
+
+
+
+
+   tipo_test = [
   // this is the parent or 'item'
   {
     name: 'Tipo de Proyectos',
@@ -38,92 +112,8 @@ const tipo_test = [
     ],
   }]
 
-const  alumnos_test = [
-  {
-    name: 'Alumnos',
-    id: 0,
-    children: [
-      {
-        name: 'Sebastian Vicario',
-        id: 1,
-      },
-      {
-        name: 'Marcelo Cavazzoli',
-        id: 2,
-      },
-      {
-        name: 'Nicolas Wally',
-        id: 3,
-      },
-    ],
-  }
-];
-
-const  tutores_test = [
-  {
-    name: 'Tutores',
-    id: 1,
-    children: [
-      {
-        name: 'Pablo Cosa',
-        id: 901,
-      },
-      {
-        name: 'Ricardo Veiga',
-        id: 902,
-      },
-      {
-        name: 'Walter Nicolas Wally',
-        id: 903,
-      },
-    ],
-  }
-];
-
-const  carreras_test = [
-  {
-    name: 'Carreras',
-    id: 2,
-    children: [
-      {
-        name: 'Ing Informatica',
-        id: 1001,
-      },
-      {
-        name: 'Ing Industrial',
-        id: 1002,
-      },
-      {
-        name: 'Ing Arte de la Guerra',
-        id: 1003,
-      },
-    ],
-  }
-];
 
 
-
-
-
-
-export default class MyProyectScreen extends React.Component {
-
-  onProyectTypeSelect = (selectedType) => {
-    console.log('selectedType',selectedType)
-    this.setState({ selectedType });
-  };
-   onStudentSelect = (selectedStudent) => {
-    console.log('selectedStudent',selectedStudent)
-    this.setState({ selectedStudent });
-  };
-   onTutorSelect = (selectedTutor) => {
-    console.log('selectedTutor',selectedTutor)
-    this.setState({ selectedTutor });
-  };
-   onCarreerSelect = (selectedCarreer) => {
-    console.log('selectedCarreer',selectedCarreer)
-    this.setState({ selectedCarreer });
-  };
 
 
   state = {
@@ -159,7 +149,7 @@ export default class MyProyectScreen extends React.Component {
 
       <Text>Tipo de Proyecto:</Text>
        <SectionedMultiSelect
-          items={tipo_test}
+          items={this.tipo_test}
           uniqueKey="id"
           subKey="children"
           selectText="Tipo:"
@@ -174,7 +164,7 @@ export default class MyProyectScreen extends React.Component {
 
       <Text>Co Autores:</Text>
         <SectionedMultiSelect
-          items={alumnos_test}
+          items={this.students}
           uniqueKey="id"
           subKey="children"
           style={styles.picker}
@@ -188,7 +178,7 @@ export default class MyProyectScreen extends React.Component {
 
       <Text>Tutor:</Text>
         <SectionedMultiSelect
-          items={tutores_test}
+          items={this.tutors}
           uniqueKey="id"
           subKey="children"
           style={styles.picker}
@@ -202,7 +192,7 @@ export default class MyProyectScreen extends React.Component {
 
       <Text>Carreras:</Text>
         <SectionedMultiSelect
-          items={carreras_test}
+          items={this.careers}
           uniqueKey="id"
           subKey="children"
           style={styles.picker}

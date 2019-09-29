@@ -3,6 +3,7 @@ import { AsyncStorage } from "react-native"
 const tokenProvider = {
   storeToken: async function(token) {
     try {
+      console.log('storing token',token)
         var jsonOfItem = await AsyncStorage.setItem('accessToken', token);
         return jsonOfItem;
     } catch (error) {
@@ -11,7 +12,19 @@ const tokenProvider = {
   },
 
   getToken: async function(){
-  	 return await AsyncStorage.getItem('accessToken');
+
+  try {
+    const value = await AsyncStorage.getItem('accessToken');
+    if (value !== null) {
+      // We have data!!
+      console.log('getToken',value);
+      return value;
+    }
+  }
+   catch (error) {
+    // Error retrieving data
+  }
+
   },
 
   clearToken: async function(){
