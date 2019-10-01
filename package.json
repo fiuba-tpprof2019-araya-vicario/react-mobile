@@ -11,6 +11,7 @@
     "react": "16.8.6",
     "react-native": "0.60.5",
     "react-native-autocomplete-input": "^4.1.0",
+    "react-native-elements": "^1.2.3",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-google-signin": "^2.0.0",
     "react-native-modal": "^11.4.0",

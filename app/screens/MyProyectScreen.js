@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import apiProvider from '../providers/apiProvider'
 import COLORS from '../util/colors'
+import { Badge } from 'react-native-elements'
 
 export default class MyProyectScreen extends React.Component {
 
@@ -128,9 +129,9 @@ export default class MyProyectScreen extends React.Component {
     >
 
     <View style={styles.content}>
-    <Text style={styles.contentTitle}>Crea un nuevo Proyecto 👋</Text>
+    <Text style={styles.title}>Crea un nuevo Proyecto 👋</Text>
 
-    <Text style={styles.contentSubTitle}>Titulo:</Text>
+    <Text style={styles.subTitle}>Titulo:</Text>
     <TextInput
     style={styles.titleInput}
     onChangeText={(title) => this.setState({title})}
@@ -138,7 +139,7 @@ export default class MyProyectScreen extends React.Component {
     value={this.state.title}
     />
 
-    <Text style={styles.contentSubTitle}>Tipo de Proyecto:</Text>
+    <Text style={styles.subTitle}>Tipo de Proyecto:</Text>
     <SectionedMultiSelect
     items={this.type_proyect}
     uniqueKey="id"
@@ -151,7 +152,7 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedType}
     />
 
-    <Text style={styles.contentSubTitle}>Co Autores:</Text>
+    <Text style={styles.subTitle}>Co Autores:</Text>
     <SectionedMultiSelect
     items={this.students}
     uniqueKey="id"
@@ -165,7 +166,7 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedStudent}
     />
 
-    <Text style={styles.contentSubTitle}>Tutor:</Text>
+    <Text style={styles.subTitle}>Tutor:</Text>
     <SectionedMultiSelect
     items={this.tutors}
     uniqueKey="id"
@@ -179,7 +180,7 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedTutor}
     />
 
-    <Text style={styles.contentSubTitle}>Carreras:</Text>
+    <Text style={styles.subTitle}>Carreras:</Text>
     <SectionedMultiSelect
     items={this.careers}
     uniqueKey="id"
@@ -193,7 +194,7 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedCarreer}
     />
 
-    <Text style={styles.contentSubTitle}>Descripcion:</Text>
+    <Text style={styles.subTitle}>Descripcion:</Text>
     <TextInput
     style={styles.descriptionInput}
     onChangeText={(description) => this.setState({description})}
@@ -219,12 +220,24 @@ export default class MyProyectScreen extends React.Component {
       return null;
     }
     return(
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{"Tu proyecto id:"+project.id}</Text>
-      <Text>{project.name}</Text>
-      <Text>{project.description}</Text>
-      <Text>{project.Creator.name+" "+project.Creator.surname}</Text>
-      <Text>{project.Tutor.name+" "+project.Tutor.surname}</Text>
+      <View style={{ flex: 3, alignItems: 'center', justifyContent: 'space-around' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Badge
+            style={{marginBottom: 12}}
+            value={project.State.id}
+            status="success"
+            badgeStyle={{ height: 66, width: 66, borderRadius: 90 }}
+            textStyle={{fontSize: 24}}
+          />
+          <Text style={styles.title}>{project.State.name}</Text>
+        </View>
+        <View style={{ flex: 2, alignItems: 'flex-start' }}>
+          <Text style={styles.subTitle}>{"Tu proyecto id:"+project.id}</Text>
+          <Text style={styles.subTitle}>{project.name}</Text>
+          <Text style={styles.subTitle}>{project.description}</Text>
+          <Text style={styles.subTitle}>{project.Creator.name+" "+project.Creator.surname}</Text>
+          <Text style={styles.subTitle}>{project.Tutor.name+" "+project.Tutor.surname}</Text>
+        </View>
       </View>
       )
   }
@@ -285,14 +298,21 @@ const styles = StyleSheet.create({
     height: 50, 
     width: 200
   },
-  contentTitle: {
+  title: {
+    fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 12,
   },
-  contentSubTitle: {
+  subTitle: {
+    fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 8,
   },
+  info: {
+    fontSize: 12,
+    marginBottom: 8,
+  },
+  
   titleInput: { height: 40, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8, width:"80%" },
   descriptionInput: { width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8 },
   bottomModal: {
