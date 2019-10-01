@@ -11,6 +11,7 @@ import RequestScreen from '../screens/RequestScreen'
 import IdeasScreen from '../screens/IdeasScreen'
 import RequirementScreen from '../screens/RequirementScreen'
 import ProfileScreen from '../screens/ProfileScreen'
+import COLORS from '../util/colors'
 
 
 
@@ -85,7 +86,7 @@ export default createAppContainer(createBottomTabNavigator(
     }),
 
     tabBarOptions: {
-      activeTintColor: 'tomato',
+      activeTintColor: COLORS.primary,
       inactiveTintColor: 'gray',
     },
 

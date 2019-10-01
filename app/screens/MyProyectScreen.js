@@ -1,13 +1,9 @@
-
 import React, { Component } from 'react';
 import {ScrollView,StyleSheet,Text,TextInput,Button,View,SafeAreaView,Picker} from 'react-native';
 import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import apiProvider from '../providers/apiProvider'
-
-
-
-
+import COLORS from '../util/colors'
 
 export default class MyProyectScreen extends React.Component {
 
@@ -161,7 +157,7 @@ export default class MyProyectScreen extends React.Component {
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
-    colors={{primary: '#00aee6'}}
+    colors={{primary: COLORS.primary}}
     selectText="Co Autores:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -175,7 +171,7 @@ export default class MyProyectScreen extends React.Component {
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
-    colors={{primary: '#00aee6'}}
+    colors={{primary: COLORS.primary}}
     selectText="Tutores:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -189,7 +185,7 @@ export default class MyProyectScreen extends React.Component {
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
-    colors={{primary: '#00aee6'}}
+    colors={{primary: COLORS.primary}}
     selectText="Carreras:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -208,7 +204,7 @@ export default class MyProyectScreen extends React.Component {
     <Button
     onPress={() => {this.createIdea();}}
     title="Crear Proyecto"
-    color='#00aee6'
+    color={COLORS.primary}
     />
 
     </View>
