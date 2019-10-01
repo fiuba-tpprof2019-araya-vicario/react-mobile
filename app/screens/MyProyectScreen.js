@@ -43,6 +43,8 @@ export default class MyProyectScreen extends React.Component {
     await this.getTutors();
     await this.getCareers();
     await this.updateProject();
+    console.log('Students: ', this.students)
+
   };
 
   onProyectTypeSelect = (selectedType) => {
@@ -69,13 +71,16 @@ export default class MyProyectScreen extends React.Component {
 
   async _createUserSelector(collection,responseJson){
     // let responseJson = ;
+    console.log('serverStudents: ', responseJson)
+
     let serverStudents = responseJson.data;
+    console.log('serverStudents: ', serverStudents)
     for (var i = serverStudents.length - 1; i >= 0; i--) {
       collection[0].children.push({
         "name":serverStudents[i].name+" "+serverStudents[i].surname,
         "id":serverStudents[i].id
       })
-    }    
+    }
   }
 
   async getStudents() {
@@ -129,15 +134,15 @@ export default class MyProyectScreen extends React.Component {
     <View style={styles.content}>
     <Text style={styles.contentTitle}>Crea un nuevo Proyecto 👋</Text>
 
-    <Text>Titulo:</Text>
+    <Text style={styles.contentSubTitle}>Titulo:</Text>
     <TextInput
-    style={{ height: 40, borderColor: 'gray', borderWidth: 0.5 }}
+    style={styles.titleInput}
     onChangeText={(title) => this.setState({title})}
     placeholder="Ingrese el titulo para tu idea"
     value={this.state.title}
     />
 
-    <Text>Tipo de Proyecto:</Text>
+    <Text style={styles.contentSubTitle}>Tipo de Proyecto:</Text>
     <SectionedMultiSelect
     items={this.type_proyect}
     uniqueKey="id"
@@ -150,12 +155,13 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedType}
     />
 
-    <Text>Co Autores:</Text>
+    <Text style={styles.contentSubTitle}>Co Autores:</Text>
     <SectionedMultiSelect
     items={this.students}
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
+    colors={{primary: '#00aee6'}}
     selectText="Co Autores:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -163,12 +169,13 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedStudent}
     />
 
-    <Text>Tutor:</Text>
+    <Text style={styles.contentSubTitle}>Tutor:</Text>
     <SectionedMultiSelect
     items={this.tutors}
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
+    colors={{primary: '#00aee6'}}
     selectText="Tutores:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -176,12 +183,13 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedTutor}
     />
 
-    <Text>Carreras:</Text>
+    <Text style={styles.contentSubTitle}>Carreras:</Text>
     <SectionedMultiSelect
     items={this.careers}
     uniqueKey="id"
     subKey="children"
     style={styles.picker}
+    colors={{primary: '#00aee6'}}
     selectText="Carreras:"
     showDropDowns={false}
     readOnlyHeadings={true}
@@ -189,9 +197,9 @@ export default class MyProyectScreen extends React.Component {
     selectedItems={this.state.selectedCarreer}
     />
 
-    <Text>Descripcion:</Text>
+    <Text style={styles.contentSubTitle}>Descripcion:</Text>
     <TextInput
-    style={{ width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5 }}
+    style={styles.descriptionInput}
     onChangeText={(description) => this.setState({description})}
     placeholder="Descrpcion de la idea"
     value={this.state.description}
@@ -200,6 +208,7 @@ export default class MyProyectScreen extends React.Component {
     <Button
     onPress={() => {this.createIdea();}}
     title="Crear Proyecto"
+    color='#00aee6'
     />
 
     </View>
@@ -284,6 +293,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 12,
   },
+  contentSubTitle: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  titleInput: { height: 40, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8, width:"80%" },
+  descriptionInput: { width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8 },
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
