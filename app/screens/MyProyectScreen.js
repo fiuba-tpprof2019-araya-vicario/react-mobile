@@ -220,7 +220,7 @@ export default class MyProyectScreen extends React.Component {
       return null;
     }
     return(
-      <View style={{ flex: 3, alignItems: 'center', justifyContent: 'space-around' }}>
+      <View style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Badge
             style={{marginBottom: 12}}
@@ -232,11 +232,32 @@ export default class MyProyectScreen extends React.Component {
           <Text style={styles.title}>{project.State.name}</Text>
         </View>
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
-          <Text style={styles.subTitle}>{"Tu proyecto id:"+project.id}</Text>
           <Text style={styles.subTitle}>{project.name}</Text>
-          <Text style={styles.subTitle}>{project.description}</Text>
-          <Text style={styles.subTitle}>{project.Creator.name+" "+project.Creator.surname}</Text>
-          <Text style={styles.subTitle}>{project.Tutor.name+" "+project.Tutor.surname}</Text>
+          <Text style={styles.info}>{project.description}</Text>
+
+          <Text style={styles.subTitle}>{'Autores:'}</Text>
+          <Text style={styles.info}>{` - ${project.Creator.name} ${project.Creator.surname} (${project.Creator.email})`}</Text>
+          {project.Students.map(student => <Text style={styles.info}>{` - ${student.name} ${student.surname} (${student.email})`}</Text>)}
+          
+          <Text style={styles.subTitle}>{'Tutores:'}</Text>
+          <Text style={styles.info}>{` - ${project.Tutor.name} ${project.Tutor.surname} (${project.Tutor.email})`}</Text>
+          {project.Cotutors.map(cotutor => <Text style={styles.info}>{` - ${cotutor.name} ${cotutor.surname} (${cotutor.email})`}</Text>)}
+
+          <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
+            <View style={{ marginRight: 8 }}>
+              <Button
+                onPress={() => {this.createIdea();}}
+                title="Abandonar idea"
+                color='red'
+              />
+            </View>
+            
+            <Button
+              onPress={() => {this.createIdea();}}
+              title="Editar idea"
+              color={COLORS.primary}
+            />
+          </View>
         </View>
       </View>
       )
@@ -249,7 +270,7 @@ export default class MyProyectScreen extends React.Component {
     }
 
     return(
-      <View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button
       onPress={() => this.setState({ visibleModal: 'backdropPress' })}
       title="Crear Nuevo Proyecto"
@@ -282,9 +303,8 @@ export default class MyProyectScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'white',
+    margin: 8
   },
   content: {
     backgroundColor: 'white',
@@ -294,6 +314,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+
   picker:{
     height: 50, 
     width: 200
