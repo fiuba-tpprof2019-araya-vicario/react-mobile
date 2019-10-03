@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {StyleSheet,Text,Button,View} from 'react-native';
 import apiProvider from '../providers/apiProvider'
 import COLORS from '../util/colors'
-import UploadProjectModal from '../modals/CreateProjectModal'
+import UploadProjectModal from '../modals/UploadProjectModal'
+import DeleteProjectModal from '../modals/DeleteProjectModal'
 import { Badge } from 'react-native-elements'
 
 export default class MyProyectScreen extends React.Component {
@@ -12,6 +13,7 @@ export default class MyProyectScreen extends React.Component {
     super()
     this.createIdea = this.createIdea.bind(this);
     this.editIdea = this.editIdea.bind(this);
+    this.deleteIdea = this.deleteIdea.bind(this);
     this.state = {
       fileUrl:"",
       project:null,
@@ -23,28 +25,34 @@ export default class MyProyectScreen extends React.Component {
     await this.getStudents();
     await this.getTutors();
     await this.getCareers();
+    // await this.getTypes();
     await this.updateProject();
   };
 
   async updateProject(){
     const project = await apiProvider.getMyProject();
     console.log('project: ', project)
-    this.CreateProjectModal.updateData(project)
-    this.CreateProjectModal.close()
+    this.UploadProjectModal.updateData(project)
+    this.UploadProjectModal.close()
+    this.DeleteProjectModal.close()
     this.setState({ project });
     return
   }
 
   async getStudents() {
-    return this.CreateProjectModal.updateStudents(await apiProvider.getStudents());
+    return this.UploadProjectModal.updateStudents(await apiProvider.getStudents());
   }
 
   async getTutors() {
-    return this.CreateProjectModal.updateTutors(await apiProvider.getTutors());
+    return this.UploadProjectModal.updateTutors(await apiProvider.getTutors());
   }
 
   async getCareers() {
-    return this.CreateProjectModal.updateCareers(await apiProvider.getCareers())
+    return this.UploadProjectModal.updateCareers(await apiProvider.getCareers())
+  }
+
+  async getTypes() {
+    return this.UploadProjectModal.updateTypes(await apiProvider.getTypes())
   }
 
   async createIdea(data){
@@ -56,6 +64,12 @@ export default class MyProyectScreen extends React.Component {
   async editIdea(data){
     let editResponse = await apiProvider.editIdea(data, this.state.project.id);
     console.log('editIdea:', editResponse)
+    await this.updateProject();
+  }
+
+  async deleteIdea(){
+    let deleteResponse = await apiProvider.deleteIdea(this.state.project.id);
+    console.log('deleteIdea:', deleteResponse)
     await this.updateProject();
   }
 
@@ -87,14 +101,14 @@ export default class MyProyectScreen extends React.Component {
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
             <View style={{ marginRight: 8 }}>
               <Button
-                onPress={() => this.openModalEshow({ editMode: true })}
+                onPress={() => this.DeleteProjectModal.show()}
                 title="Abandonar idea"
                 color='red'
               />
             </View>
             
             <Button
-              onPress={() => this.CreateProjectModal.show({ editMode: true })}
+              onPress={() => this.UploadProjectModal.show({ editMode: true })}
               title="Editar idea"
               color={COLORS.primary}
             />
@@ -107,7 +121,7 @@ export default class MyProyectScreen extends React.Component {
     (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button
-      onPress={() => this.CreateProjectModal.show({ editMode: false })}
+      onPress={() => this.UploadProjectModal.show({ editMode: false })}
       title="Crear Nuevo Proyecto"
       />
       </View>
@@ -122,7 +136,11 @@ export default class MyProyectScreen extends React.Component {
       <UploadProjectModal
         onCreate={this.createIdea}
         onEdit={this.editIdea}
-        ref={ref => (this.CreateProjectModal = ref)}
+        ref={ref => (this.UploadProjectModal = ref)}
+      />
+      <DeleteProjectModal
+        onSubmit={this.deleteIdea}
+        ref={ref => (this.DeleteProjectModal = ref)}
       />
       </View>
       );

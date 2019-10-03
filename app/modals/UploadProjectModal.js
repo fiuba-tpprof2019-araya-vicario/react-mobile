@@ -53,6 +53,16 @@ export default class UploadProjectModal extends React.Component {
     }
   }
 
+  updateTypes(responseJson){
+    let serverTypes = responseJson.data;
+    for (var i = serverTypes.length - 1; i >= 0; i--) {
+      this.type_proyect[0].children.push({
+        "name":serverTypes[i].name,
+        "id":serverTypes[i].id
+      })
+    }
+  }
+
   _updateSelector(collection, responseJson){
     let serverStudents = responseJson.data;
     for (var i = serverStudents.length - 1; i >= 0; i--) {
@@ -64,6 +74,23 @@ export default class UploadProjectModal extends React.Component {
   }
 
   updateData(project){
+    (project == null) ? this.cleanData() : this.loadData(project)
+  }
+
+  cleanData(){
+    this.setState({ 
+      selectedStudent: [],
+      selectedTutor: [],
+      selectedCarreer: [],
+      selectedType: [],
+      title:"",
+      description:"",
+      visibleModal: null,
+      editMode: false
+    })
+  }
+
+  loadData(project){
     this.setState({ 
       title: project.name,
       description: project.description,
@@ -145,7 +172,8 @@ export default class UploadProjectModal extends React.Component {
         uniqueKey="id"
         subKey="children"
         selectText="Tipo:"
-        single="true"
+        single={true}
+        colors={{primary: COLORS.primary}}
         showDropDowns={false}
         readOnlyHeadings={true}
         onSelectedItemsChange={this.onProyectTypeSelect}
@@ -174,6 +202,7 @@ export default class UploadProjectModal extends React.Component {
         style={styles.picker}
         colors={{primary: COLORS.primary}}
         selectText="Tutores:"
+        single={true}
         showDropDowns={false}
         readOnlyHeadings={true}
         onSelectedItemsChange={this.onTutorSelect}

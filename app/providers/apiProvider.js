@@ -75,6 +75,29 @@ const apiProvider = {
     }
   },
 
+  _delete: async function(route){
+
+    let token = await tokenProvider.getToken();
+
+    try {
+      let response = await fetch(
+        config.api.url+route,
+        {
+          method: 'delete',
+          headers: {
+            'Content-Type':'application/json',
+            'Authorization':token
+          },
+        }
+        );
+      let responseJson = await response.json();
+      return responseJson;
+    } 
+    catch (error) {
+      console.error(error);
+    }
+  },
+
 
   login: async function(userInfo) {
     let passbody= {
@@ -94,13 +117,12 @@ const apiProvider = {
          "description":idea.description,
          "students":idea.selectedStudent,
          "tutor_id":idea.selectedTutor[0],
-         "cotutors":idea.selectedTutor,
+         "cotutors":[],
          "careers": idea.selectedCarreer,
          "type_id": idea.selectedType[0],
      }
     console.log('posting new project',body)
      return this._post("/projects",body);
-
   },
 
   editIdea: async function(idea, projectId){
@@ -110,14 +132,18 @@ const apiProvider = {
         "description":idea.description,
         "students":idea.selectedStudent,
         "tutor_id":idea.selectedTutor[0],
-        "cotutors":idea.selectedTutor,
+        "cotutors":[],
         "careers": idea.selectedCarreer,
         "type_id": idea.selectedType[0],
     }
-   console.log('posting new project',body)
+   console.log('puting project',body)
     return this._put(`/projects/${projectId}`,body);
-
  },
+
+ deleteIdea: async function(projectId){
+  console.log('deleting project')
+  return this._delete(`/projects/${projectId}`);
+},
 
   getMyProject: async function(){
     let currentProject =  await this._get('/projects/students/');
@@ -145,7 +171,9 @@ const apiProvider = {
   getCareers: async function(){
     return this._get('/careers');
   },
-
+  getTypes: async function(){
+    return this._get('/types');
+  },
 
 }
 
