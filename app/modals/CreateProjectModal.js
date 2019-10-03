@@ -4,22 +4,20 @@ import {StyleSheet,Text,TextInput,Button,View,ScrollView,Picker} from 'react-nat
 import Modal from 'react-native-modal';
 import COLORS from '../util/colors'
 
-export default class CreateProjectModal extends React.Component {
+export default class UploadProjectModal extends React.Component {
 
   constructor(props) {
     super();
     console.log('props: ', props)
     this.state = {
-      selectedItems: [],
       selectedStudent: [],
       selectedTutor: [],
       selectedCarreer: [],
       selectedType: [],
       title:"",
       description:"",
-      fileUrl:"",
-      project: props.project,
-      visibleModal: null
+      visibleModal: null,
+      editMode: false
     };
   };
 
@@ -65,16 +63,31 @@ export default class CreateProjectModal extends React.Component {
     }
   }
 
-  show(){
-    this.setState({ visibleModal: 'backdropPress' });
+  updateData(project){
+    this.setState({ 
+      title: project.name,
+      description: project.description,
+      selectedStudent: project.Students.map((student) => student.id),
+      selectedTutor: project.tutor_id != null ? [project.tutor_id] : [],
+      selectedCarreer: project.ProjectCareers.map((projectCareer) => projectCareer.career_id),
+      selectedType: project.type_id != null ? [project.type_id] : []
+    })
+  }
+
+  show(data){
+    this.setState({ visibleModal: 'backdropPress', editMode: data.editMode });
   };
 
   close(){
     this.setState({ visibleModal: null });
   };
 
-  submit(){
-    this.props.onSubmit(this.state)
+  create(){
+    this.props.onCreate(this.state)
+  };
+
+  edit(){
+    this.props.onEdit(this.state)
   };
 
   onProyectTypeSelect = (selectedType) => {
@@ -114,8 +127,10 @@ export default class CreateProjectModal extends React.Component {
         >
 
         <View style={styles.content}>
-        <Text style={styles.title}>Crea un nuevo Proyecto 👋</Text>
-
+        { this.state.editMode ? 
+          <Text style={styles.title}>Edita el Proyecto 👋</Text> :
+          <Text style={styles.title}>Crea un nuevo Proyecto 👋</Text>
+        }
         <Text style={styles.subTitle}>Titulo:</Text>
         <TextInput
         style={styles.titleInput}
@@ -188,8 +203,8 @@ export default class CreateProjectModal extends React.Component {
         />                                                                        
 
         <Button
-        onPress={() => {this.submit();}}
-        title="Crear Proyecto"
+        onPress={() => { this.state.editMode ? this.edit() : this.create();}}
+        title={ this.state.editMode ? "Editar Proyecto" : "Crear Proyecto"}
         color={COLORS.primary}
         />
 

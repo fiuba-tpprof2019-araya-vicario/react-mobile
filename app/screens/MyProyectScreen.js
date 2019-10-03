@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {StyleSheet,Text,Button,View} from 'react-native';
 import apiProvider from '../providers/apiProvider'
 import COLORS from '../util/colors'
-import CreateProjectModal from '../modals/CreateProjectModal'
+import UploadProjectModal from '../modals/CreateProjectModal'
 import { Badge } from 'react-native-elements'
 
 export default class MyProyectScreen extends React.Component {
@@ -11,6 +11,7 @@ export default class MyProyectScreen extends React.Component {
   constructor(props) {
     super()
     this.createIdea = this.createIdea.bind(this);
+    this.editIdea = this.editIdea.bind(this);
     this.state = {
       fileUrl:"",
       project:null,
@@ -28,8 +29,10 @@ export default class MyProyectScreen extends React.Component {
   async updateProject(){
     const project = await apiProvider.getMyProject();
     console.log('project: ', project)
+    this.CreateProjectModal.updateData(project)
     this.CreateProjectModal.close()
     this.setState({ project });
+    return
   }
 
   async getStudents() {
@@ -50,12 +53,14 @@ export default class MyProyectScreen extends React.Component {
     await this.updateProject();
   }
 
-  renderProjectInfo() {
-    const { project } = this.state;
-    if (!project) {
-      return null;
-    }
-    return(
+  async editIdea(data){
+    let editResponse = await apiProvider.editIdea(data, this.state.project.id);
+    console.log('editIdea:', editResponse)
+    await this.updateProject();
+  }
+
+  renderProjectInfo = (project) =>
+    (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Badge
@@ -82,14 +87,14 @@ export default class MyProyectScreen extends React.Component {
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
             <View style={{ marginRight: 8 }}>
               <Button
-                onPress={() => {this.createIdea();}}
+                onPress={() => this.openModalEshow({ editMode: true })}
                 title="Abandonar idea"
                 color='red'
               />
             </View>
             
             <Button
-              onPress={() => {this.createIdea();}}
+              onPress={() => this.CreateProjectModal.show({ editMode: true })}
               title="Editar idea"
               color={COLORS.primary}
             />
@@ -97,37 +102,28 @@ export default class MyProyectScreen extends React.Component {
         </View>
       </View>
       )
-  }
 
-  renderCreateProject() {
-    const { project } = this.state;
-    if (project) {
-      return null;
-    }
-
-    return(
+  renderCreateProject = () =>
+    (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button
-      onPress={() => this.CreateProjectModal.show()}
+      onPress={() => this.CreateProjectModal.show({ editMode: false })}
       title="Crear Nuevo Proyecto"
       />
-      <CreateProjectModal
-        project={this.props.project}
-        onSubmit={this.createIdea}
-        ref={ref => (this.CreateProjectModal = ref)}
-      />
-
       </View>
-      )
-
-  }
+    )
 
 
   render() {
+    console.log('Render: ', this.state)
     return (
       <View style={styles.container}>
-      {this.renderProjectInfo()}
-      {this.renderCreateProject()}
+      {this.state.project != null ? this.renderProjectInfo(this.state.project) : this.renderCreateProject()}
+      <UploadProjectModal
+        onCreate={this.createIdea}
+        onEdit={this.editIdea}
+        ref={ref => (this.CreateProjectModal = ref)}
+      />
       </View>
       );
   };
