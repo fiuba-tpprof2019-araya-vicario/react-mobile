@@ -5,7 +5,7 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-goog
 
 import config from '../config/config'
 
-import tokenProvider from '../providers/tokenProvider'
+import storageProvider from '../providers/storageProvider'
 
 export default class ProfileScreen extends React.Component {
 
@@ -28,7 +28,7 @@ export default class ProfileScreen extends React.Component {
       await GoogleSignin.signOut();
       this.setState({ userInfo: null, error: null });
 
-      await tokenProvider.clearToken();
+      await storageProvider.clearStorage();
       this.props.navigation.navigate('Auth');
     } 
     catch (error) {

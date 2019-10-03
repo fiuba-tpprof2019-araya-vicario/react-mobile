@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { StyleSheet,Text, View , Button, Image, Alert} from 'react-native';
 
 import config from '../config/config'
-import tokenProvider from '../providers/tokenProvider'
+import storageProvider from '../providers/storageProvider'
 import apiProvider from '../providers/apiProvider'
 
 
@@ -45,7 +45,10 @@ export default class LoginScreen extends Component{
 }
 
   goToHomePage(serverUser){
-    tokenProvider.storeToken(serverUser.data.token);
+    console.log('serverUser: ',serverUser)
+    storageProvider.storeToken(serverUser.data.token);
+    storageProvider.storeCurrentProject(serverUser.data.projectId);
+    storageProvider.storeUser(serverUser.data.id);
     this.props.navigation.navigate('Nav', 
       { name: serverUser.data.name,
         projectId: serverUser.data.projectId})

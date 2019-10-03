@@ -1,12 +1,12 @@
 
 import config from '../config/config'
-import tokenProvider from './tokenProvider'
+import storageProvider from './storageProvider'
 
 const apiProvider = {
 
   _get: async function(route){
 
-    let token = await tokenProvider.getToken();
+    let token = await storageProvider.getToken();
 
     try {
       let response = await fetch(
@@ -29,7 +29,7 @@ const apiProvider = {
 
   _post: async function(route,body){
 
-    let token = await tokenProvider.getToken();
+    let token = await storageProvider.getToken();
 
     try {
       let response = await fetch(
@@ -53,7 +53,7 @@ const apiProvider = {
 
   _put: async function(route,body){
 
-    let token = await tokenProvider.getToken();
+    let token = await storageProvider.getToken();
 
     try {
       let response = await fetch(
@@ -77,7 +77,7 @@ const apiProvider = {
 
   _delete: async function(route){
 
-    let token = await tokenProvider.getToken();
+    let token = await storageProvider.getToken();
 
     try {
       let response = await fetch(
@@ -146,16 +146,9 @@ const apiProvider = {
 },
 
   getMyProject: async function(){
-    let currentProject =  await this._get('/projects/students/');
-    // console.log('proyect that I participate:',currentProject);
-    if(currentProject.data.Creations.length==0 
-      && currentProject.data.Participations.length==0)
-      return null;
-    let projectId;
-     if(currentProject.data.Participations.length==0)
-       projectId= currentProject.data.Creations[0].id;
-     else projectId= currentProject.data.Participations[0].id;
+    let projectId = await storageProvider.getCurrentProject();
 
+    if(projectId == null) return
 
     let project = await this._get('/projects/'+projectId);
     console.log('apiProvider:project:',project);

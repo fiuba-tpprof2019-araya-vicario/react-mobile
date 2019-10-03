@@ -5,6 +5,7 @@ import COLORS from '../util/colors'
 import UploadProjectModal from '../modals/UploadProjectModal'
 import DeleteProjectModal from '../modals/DeleteProjectModal'
 import { Badge } from 'react-native-elements'
+import storageProvider from '../providers/storageProvider'
 
 export default class MyProyectScreen extends React.Component {
 
@@ -17,16 +18,20 @@ export default class MyProyectScreen extends React.Component {
     this.state = {
       fileUrl:"",
       project:null,
+      user: null
     };
   }
   
 
   async componentDidMount() {
+    const userId = await storageProvider.getUser()
+
     await this.getStudents();
     await this.getTutors();
     await this.getCareers();
     // await this.getTypes();
     await this.updateProject();
+    this.setState({ user: userId })
   };
 
   async updateProject(){
@@ -35,6 +40,7 @@ export default class MyProyectScreen extends React.Component {
     this.UploadProjectModal.updateData(project)
     this.UploadProjectModal.close()
     this.DeleteProjectModal.close()
+
     this.setState({ project });
     return
   }
@@ -57,6 +63,7 @@ export default class MyProyectScreen extends React.Component {
 
   async createIdea(data){
     let createResponse = await apiProvider.createIdea(data);
+    storageProvider.storeCurrentProject(createResponse.data)
     console.log('createdIdea:',createResponse)
     await this.updateProject();
   }
@@ -69,6 +76,7 @@ export default class MyProyectScreen extends React.Component {
 
   async deleteIdea(){
     let deleteResponse = await apiProvider.deleteIdea(this.state.project.id);
+    storageProvider.clearCurrentProject()
     console.log('deleteIdea:', deleteResponse)
     await this.updateProject();
   }
@@ -107,11 +115,11 @@ export default class MyProyectScreen extends React.Component {
               />
             </View>
             
-            <Button
+            {(this.state.project.Creator.id == this.state.user) ? <Button
               onPress={() => this.UploadProjectModal.show({ editMode: true })}
               title="Editar idea"
               color={COLORS.primary}
-            />
+            /> : null}
           </View>
         </View>
       </View>
