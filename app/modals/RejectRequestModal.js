@@ -3,32 +3,41 @@ import {StyleSheet,Text,Button,View} from 'react-native';
 import Modal from 'react-native-modal';
 import COLORS from '../util/colors'
 
-export default class DeleteProjectModal extends React.Component {
+export default class RejectRequestModal extends Component {
 
   constructor(props) {
     super();
     this.state = {
       visibleModal: null,
+      requestId: null
     };
   };
 
-  show(){
-    this.setState({ visibleModal: 'backdropPress' });
+  show(requestId){
+    this.setState({ visibleModal: 'backdropPress', requestId });
   };
 
   close(){
-    this.setState({ visibleModal: null });
+    this.setState({ visibleModal: null, requestId: null });
   };
 
   renderModalContent = () => (
     <View style={styles.content}>
-      <Text style={styles.title}>Eliminar el Proyecto 👋</Text>
-      <Text style={styles.subTitle}>Desea eliminar el proyecto?</Text>
-      <Button
-      onPress={() => this.props.onSubmit()}
-      title='Eliminar Proyecto'
-      color='red'
-      />
+      <Text style={styles.title}>Rechazar pedido de colaboración</Text>
+      <Text style={styles.subTitle}>¿Estás seguro de que quieres rechazar el pedido para trabajr en el proyecto?</Text>
+      <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
+        <View style={{ marginRight: 8 }}>
+          <Button
+            onPress={() => this.close()}
+            title='Cancelar'
+          />
+        </View>
+        <Button
+          onPress={() => this.props.onSubmit(this.state.requestId)}
+          title="Rechazar"
+          color={COLORS.danger}
+        />
+      </View>
     </View>
   );
 

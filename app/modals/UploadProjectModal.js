@@ -9,19 +9,6 @@ import storageProvider from '../providers/storageProvider'
 
 export default class UploadProjectModal extends React.Component {
 
-
-
-    async componentDidMount() {
-    const userId = await storageProvider.getUser()
-
-    await this.getStudents();
-    await this.getTutors();
-    await this.getCareers();
-    // await this.getTypes();
-  };
-
-
-
   constructor(props) {
     super();
     console.log('props: ', props)
@@ -51,8 +38,17 @@ export default class UploadProjectModal extends React.Component {
     ],
   }]
 
-   async getStudents() {
-    let response = await await apiProvider.getStudents();
+  async componentDidMount() {
+    const userId = await storageProvider.getUser()
+
+    await this.getStudents();
+    await this.getTutors();
+    await this.getCareers();
+    // await this.getTypes();
+  };
+
+  async getStudents() {
+    let response = await apiProvider.getStudents();
     this._updateSelector(this.students, response)
   }
 

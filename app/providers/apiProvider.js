@@ -138,12 +138,28 @@ const apiProvider = {
     }
    console.log('puting project',body)
     return this._put(`/projects/${projectId}`,body);
- },
+  },
 
- deleteIdea: async function(projectId){
-  console.log('deleting project')
-  return this._delete(`/projects/${projectId}`);
-},
+  deleteIdea: async function(projectId){
+    console.log('deleting project')
+    return this._delete(`/projects/${projectId}`);
+  },
+
+  acceptStudentRequest: async function(requestId){
+    let body ={
+      "status": "accepted"
+    }
+
+    return this._put(`/requests/students/${requestId}`, body);
+  },
+
+  rejectStudentRequest: async function(requestId){
+    let body ={
+      "status": "rejected"
+    }
+
+    return this._put(`/requests/students/${requestId}`, body);
+  },
 
   getMyProject: async function(){
     let projectId = await storageProvider.getCurrentProject();
@@ -167,7 +183,9 @@ const apiProvider = {
   getTypes: async function(){
     return this._get('/types');
   },
-
+  getStudentRequests: async function(){
+    return this._get('/requests/students');
+  }
 }
 
 export default apiProvider;

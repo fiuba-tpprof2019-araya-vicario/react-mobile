@@ -11,7 +11,6 @@ import storageProvider from '../providers/storageProvider'
 
 export default class MyProyectScreen extends React.Component {
 
-
   constructor(props) {
     super()
     this.createIdea = this.createIdea.bind(this);
@@ -23,7 +22,6 @@ export default class MyProyectScreen extends React.Component {
       user: null
     };
   }
-  
 
   async componentDidMount() {
     const userId = await storageProvider.getUser()
@@ -51,7 +49,6 @@ export default class MyProyectScreen extends React.Component {
     console.log('editIdea:', editResponse)
     await this.updateProject();
     this.UploadProjectModal.close()
-
   }
 
   async deleteIdea(){
