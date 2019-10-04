@@ -4,7 +4,23 @@ import {StyleSheet,Text,TextInput,Button,View,ScrollView,Picker} from 'react-nat
 import Modal from 'react-native-modal';
 import COLORS from '../util/colors'
 
+import apiProvider from '../providers/apiProvider'
+import storageProvider from '../providers/storageProvider'
+
 export default class UploadProjectModal extends React.Component {
+
+
+
+    async componentDidMount() {
+    const userId = await storageProvider.getUser()
+
+    await this.getStudents();
+    await this.getTutors();
+    await this.getCareers();
+    // await this.getTypes();
+  };
+
+
 
   constructor(props) {
     super();
@@ -35,16 +51,19 @@ export default class UploadProjectModal extends React.Component {
     ],
   }]
 
-  updateStudents(responseJson){
-    this._updateSelector(this.students, responseJson)
+   async getStudents() {
+    let response = await await apiProvider.getStudents();
+    this._updateSelector(this.students, response)
   }
 
-  updateTutors(responseJson){
-    this._updateSelector(this.tutors, responseJson)
+  async getTutors() {
+    let response = await apiProvider.getTutors();
+    this._updateSelector(this.tutors, response)
   }
 
-  updateCareers(responseJson){
-    let serverCareers = responseJson.data;
+  async getCareers() {
+    let response = await apiProvider.getCareers()
+        let serverCareers = response.data;
     for (var i = serverCareers.length - 1; i >= 0; i--) {
       this.careers[0].children.push({
         "name":serverCareers[i].name,
@@ -53,8 +72,9 @@ export default class UploadProjectModal extends React.Component {
     }
   }
 
-  updateTypes(responseJson){
-    let serverTypes = responseJson.data;
+  async getTypes() {
+    let response = await apiProvider.getTypes()
+        let serverTypes = response.data;
     for (var i = serverTypes.length - 1; i >= 0; i--) {
       this.type_proyect[0].children.push({
         "name":serverTypes[i].name,
@@ -62,6 +82,8 @@ export default class UploadProjectModal extends React.Component {
       })
     }
   }
+
+
 
   _updateSelector(collection, responseJson){
     let serverStudents = responseJson.data;
@@ -72,6 +94,8 @@ export default class UploadProjectModal extends React.Component {
       })
     }
   }
+
+
 
   updateData(project){
     (project == null) ? this.cleanData() : this.loadData(project)

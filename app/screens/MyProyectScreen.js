@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {StyleSheet,Text,Button,View} from 'react-native';
-import apiProvider from '../providers/apiProvider'
+import { Badge } from 'react-native-elements'
 import COLORS from '../util/colors'
+
 import UploadProjectModal from '../modals/UploadProjectModal'
 import DeleteProjectModal from '../modals/DeleteProjectModal'
-import { Badge } from 'react-native-elements'
+
+import apiProvider from '../providers/apiProvider'
 import storageProvider from '../providers/storageProvider'
 
 export default class MyProyectScreen extends React.Component {
@@ -25,11 +27,6 @@ export default class MyProyectScreen extends React.Component {
 
   async componentDidMount() {
     const userId = await storageProvider.getUser()
-
-    await this.getStudents();
-    await this.getTutors();
-    await this.getCareers();
-    // await this.getTypes();
     await this.updateProject();
     this.setState({ user: userId })
   };
@@ -38,27 +35,7 @@ export default class MyProyectScreen extends React.Component {
     const project = await apiProvider.getMyProject();
     console.log('project: ', project)
     this.UploadProjectModal.updateData(project)
-    this.UploadProjectModal.close()
-    this.DeleteProjectModal.close()
-
     this.setState({ project });
-    return
-  }
-
-  async getStudents() {
-    return this.UploadProjectModal.updateStudents(await apiProvider.getStudents());
-  }
-
-  async getTutors() {
-    return this.UploadProjectModal.updateTutors(await apiProvider.getTutors());
-  }
-
-  async getCareers() {
-    return this.UploadProjectModal.updateCareers(await apiProvider.getCareers())
-  }
-
-  async getTypes() {
-    return this.UploadProjectModal.updateTypes(await apiProvider.getTypes())
   }
 
   async createIdea(data){
@@ -66,12 +43,15 @@ export default class MyProyectScreen extends React.Component {
     storageProvider.storeCurrentProject(createResponse.data)
     console.log('createdIdea:',createResponse)
     await this.updateProject();
+    this.UploadProjectModal.close()
   }
 
   async editIdea(data){
     let editResponse = await apiProvider.editIdea(data, this.state.project.id);
     console.log('editIdea:', editResponse)
     await this.updateProject();
+    this.UploadProjectModal.close()
+
   }
 
   async deleteIdea(){
@@ -79,6 +59,8 @@ export default class MyProyectScreen extends React.Component {
     storageProvider.clearCurrentProject()
     console.log('deleteIdea:', deleteResponse)
     await this.updateProject();
+    this.DeleteProjectModal.close()
+
   }
 
   renderProjectInfo = (project) =>
