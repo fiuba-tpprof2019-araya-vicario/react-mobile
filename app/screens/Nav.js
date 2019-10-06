@@ -9,7 +9,12 @@ import MyProyectScreen from '../screens/MyProyectScreen'
 import StartProyectScreen from '../screens/StartProyectScreen'
 import RequestScreen from '../screens/RequestScreen'
 import IdeasScreen from '../screens/IdeasScreen'
+
 import RequirementScreen from '../screens/RequirementScreen'
+import RequestTutorScreen from '../screens/RequestTutorScreen'
+
+
+
 import ProfileScreen from '../screens/ProfileScreen'
 import COLORS from '../util/colors'
 
@@ -41,6 +46,7 @@ export default createAppContainer(createBottomTabNavigator(
 {
   'Mi Proyecto': MyProyectScreen,
   Solicitudes: RequestScreen,
+  Tutorias: RequestTutorScreen,
   Ideas: IdeasScreen,
   Requer: RequirementScreen,
   Perfil: ProfileScreen,
@@ -48,12 +54,6 @@ export default createAppContainer(createBottomTabNavigator(
 
   //options
   {
-
-                  // navigationOptions: {
-                  // title: "Test",
-                  // // headerMode: 'none',
-                  // gesturesEnabled: true
-                  // },
 
     defaultNavigationOptions: ({ navigation }) => ({
     
@@ -71,12 +71,21 @@ export default createAppContainer(createBottomTabNavigator(
           iconName = `ios-archive`;
           IconComponent = HomeIconWithBadge;
         }
+
+        else if (routeName === 'Tutorias') {
+          iconName = `ios-school`;        
+          IconComponent = HomeIconWithBadge;
+        }
+
         else if (routeName === 'Ideas') {
           iconName = `ios-bulb`;
         }
         else if (routeName === 'Requer') {
           iconName = `ios-bookmarks`;
         }
+
+
+
         else if (routeName === 'Perfil') {
           iconName = `ios-contact`;
         }

@@ -185,7 +185,11 @@ const apiProvider = {
   },
   getStudentRequests: async function(){
     return this._get('/requests/students');
+  },
+  getTutorRequests: async function(){
+    return this._get('/requests/tutors');
   }
+
 }
 
 export default apiProvider;
