@@ -40,7 +40,7 @@ export default class LoginScreen extends Component{
 
   async loginToServer(userInfo) {
       let responseJson = await apiProvider.login(userInfo);
-      console.log('response from Seba Server:',responseJson);
+      // console.log('response from Seba Server:',responseJson);
       return responseJson;
 }
 
@@ -49,7 +49,15 @@ export default class LoginScreen extends Component{
     storageProvider.storeToken(serverUser.data.token);
     storageProvider.storeCurrentProject(serverUser.data.projectId);
     storageProvider.storeUser(serverUser.data.id);
-    this.props.navigation.navigate('Nav', 
+
+
+    let route="NavCC"
+    if(serverUser.data.credentials.includes('CREATE_PROJECTS'))
+      route="NavStudent"
+    if(serverUser.data.credentials.includes('EDIT_TUTOR_REQUESTS'))
+      route="NavTutor"
+
+    this.props.navigation.navigate(route, 
       { name: serverUser.data.name,
         projectId: serverUser.data.projectId})
   }
@@ -106,15 +114,6 @@ export default class LoginScreen extends Component{
         {/*{this.renderGetTokens()}*/}
         {body}
       </View>
-
-      {/*  <Button
-        title="Ingresar Test" style={styles.button}
-        onPress={ () => this.loginToServer(userInfo)}
-        />*/}
-
-        {/*    () => navigate('Nav', {name: 'Chelo'})*/}
-
-      {/*  {this.renderError()}*/}
 
     </View>
     );

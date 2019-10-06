@@ -13,26 +13,10 @@ import IdeasScreen from '../screens/IdeasScreen'
 import RequirementScreen from '../screens/RequirementScreen'
 import RequestTutorScreen from '../screens/RequestTutorScreen'
 
-
-
 import ProfileScreen from '../screens/ProfileScreen'
 import COLORS from '../util/colors'
 
 
-
-const MyProyectStack = createStackNavigator({
-  MyProyect: {
-    screen:MyProyectScreen,
-        navigationOptions: {
-                  // title: "Main",
-                  // headerMode: 'none',
-                  header: null,
-                  gesturesEnabled: true
-                  },
-
-  },
-  StartProyect: StartProyectScreen,
-});
 
 const HomeIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like react context api, redux, mobx or event emitters.
@@ -40,22 +24,12 @@ const HomeIconWithBadge = props => {
 };
 
 
+const tabOptions ={
+      activeTintColor: COLORS.primary,
+      inactiveTintColor: 'gray',
+    }
 
-//'Mi Proyecto',Solicitudes ,Ideas,Requer,Perfil
-export default createAppContainer(createBottomTabNavigator(
-{
-  'Mi Proyecto': MyProyectScreen,
-  Solicitudes: RequestScreen,
-  Tutorias: RequestTutorScreen,
-  Ideas: IdeasScreen,
-  Requer: RequirementScreen,
-  Perfil: ProfileScreen,
-},
-
-  //options
-  {
-
-    defaultNavigationOptions: ({ navigation }) => ({
+const defaultOptions= ({ navigation }) => ({
     
 
       // title: "Ovreride",
@@ -83,26 +57,70 @@ export default createAppContainer(createBottomTabNavigator(
         else if (routeName === 'Requer') {
           iconName = `ios-bookmarks`;
         }
-
-
-
         else if (routeName === 'Perfil') {
           iconName = `ios-contact`;
         }
         // You can return any component that you like here!
         return <IconComponent name={iconName} size={25} color={tintColor} />;
       },
-    }),
+    })
 
-    tabBarOptions: {
-      activeTintColor: COLORS.primary,
-      inactiveTintColor: 'gray',
-    },
-
+const NavStudent = createAppContainer(
+  createBottomTabNavigator(
+  {
+    'Mi Proyecto': MyProyectScreen,
+    Solicitudes: RequestScreen,
+    Ideas: IdeasScreen,
+    Requer: RequirementScreen,
+    Perfil: ProfileScreen,
+  },
+  {
+    defaultNavigationOptions: defaultOptions,
+    tabBarOptions: tabOptions,
   }
   )
 );
 
 
+const NavTutor = createAppContainer(
+  createBottomTabNavigator(
+  {
+    'Mi Proyecto': MyProyectScreen,
+    Tutorias: RequestTutorScreen,
+    Ideas: IdeasScreen,
+    Requer: RequirementScreen,
+    Perfil: ProfileScreen,
+  },
+  {
+    defaultNavigationOptions: defaultOptions,
+    tabBarOptions: tabOptions,
+  }
+  )
+);
+
+
+const NavCC = createAppContainer(
+  createBottomTabNavigator(
+  {
+    Tutorias: RequestTutorScreen,
+    Perfil: ProfileScreen,
+  },
+  {
+    defaultNavigationOptions: defaultOptions,
+    tabBarOptions: {
+      activeTintColor: COLORS.primary,
+    tabBarOptions: tabOptions,
+    },
+  }
+  )
+);
+
+
+
+export {
+  NavStudent,
+  NavTutor,
+  NavCC,
+}
 
 

@@ -2,49 +2,55 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import LoginScreen from './app/screens/LoginScreen'
-import Nav from './app/screens/Nav'
-
+import {NavStudent,NavTutor,NavCC} from './app/screens/Nav'
 
 console.disableYellowBox = true;
 
-const NavStack = createStackNavigator({ Nav:
-                { screen: Nav,     
-
-                navigationOptions: ({ navigation }) => ({
+const navigationOptions=({ navigation }) => ({
                       // title: "Inside Nav",
                       // const { routeName } = navigation.state;
                       title: "Brain Search",
-                }),
-                  // navigationOptions: {
-                  // title: "Brain Search",
-                  // // headerMode: 'none',
-                  // // header: null,
-                  // },
-
-                   defaultNavigationOptions: ({ navigation }) => ({
-                      // title: "Inside Nav",
-                      // const { routeName } = navigation.state;
-                      // title: "Brain Search:"+navigation.state.routeName,
                 })
-                } 
 
+const NavStudentStack = createStackNavigator({ NavStudent:
+                { 
+                screen: NavStudent,     
+                navigationOptions: navigationOptions,
+                }
     });
+
+
+const NavTutorStack = createStackNavigator({ NavTutor:
+                 { 
+                screen: NavTutor,     
+                navigationOptions: navigationOptions,
+                } 
+    });
+
+const NavCCStack = createStackNavigator({ NavCC:
+                 { 
+                screen: NavCC,     
+                navigationOptions: navigationOptions,
+                } 
+    });
+
 const AuthStack = createStackNavigator({ SignIn: 
                 { screen: LoginScreen,     
                   navigationOptions: {
                   title: "Brain Search",
-                  // headerMode: 'none',
-                  // header: null,
                   }
                 } 
-
     });
+
+
 
 export default createAppContainer(
   createSwitchNavigator(
     {
       // AuthLoading: AuthLoadingScreen,
-      Nav: NavStack,
+      NavStudent: NavStudentStack,
+      NavTutor:NavTutorStack,
+      NavCC:NavCCStack,
       Auth: AuthStack,
     },
 

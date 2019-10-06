@@ -136,12 +136,12 @@ const apiProvider = {
         "careers": idea.selectedCarreer,
         "type_id": idea.selectedType[0],
     }
-   console.log('puting project',body)
+   // console.log('puting project',body)
     return this._put(`/projects/${projectId}`,body);
   },
 
   deleteIdea: async function(projectId){
-    console.log('deleting project')
+    // console.log('deleting project')
     return this._delete(`/projects/${projectId}`);
   },
 
@@ -167,7 +167,7 @@ const apiProvider = {
     if(projectId == null) return
 
     let project = await this._get('/projects/'+projectId);
-    console.log('apiProvider:project:',project);
+    // console.log('apiProvider:project:',project);
     return project.data;
 
   },
