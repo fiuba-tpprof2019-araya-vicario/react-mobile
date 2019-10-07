@@ -25,28 +25,28 @@ export default class RequestTutorScreen extends React.Component {
   async componentDidMount() {
     // const userId = await storageProvider.getUser()
 
-    await this.getStudentRequests();
+    await this.getTutorRequests();
   };
 
-  async getStudentRequests() {
+  async getTutorRequests() {
     let response = await apiProvider.getTutorRequests();
     console.log('Response request ', response)
     this.setState({ requests: response.data })
   }
 
   async acceptRequest(requestId){
-    let acceptResponse = await apiProvider.acceptStudentRequest(requestId);
+    let acceptResponse = await apiProvider.acceptTutorRequest(requestId);
     // storageProvider.storeCurrentProject(createResponse.data)
     console.log('acceptResponse:',acceptResponse)
-    await this.getStudentRequests();
+    await this.getTutorRequests();
     this.AcceptRequestModal.close()
   }
 
   async rejectRequest(requestId){
-    let rejectResponse = await apiProvider.rejectStudentRequest(requestId);
+    let rejectResponse = await apiProvider.rejectTutorRequest(requestId);
     // storageProvider.storeCurrentProject(createResponse.data)
     console.log('rejectResponse:',rejectResponse)
-    await this.getStudentRequests();
+    await this.getTutorRequests();
     this.RejectRequestModal.close()
   }
 

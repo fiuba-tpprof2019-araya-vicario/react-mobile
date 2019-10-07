@@ -175,19 +175,21 @@ const apiProvider = {
   },
 
   acceptStudentRequest: async function(requestId){
-    let body ={
-      "status": "accepted"
-    }
-
+    let body ={"status": "accepted"}
+    return this._put(`/requests/students/${requestId}`, body);
+  },
+  rejectStudentRequest: async function(requestId){
+    let body ={"status": "rejected"}
     return this._put(`/requests/students/${requestId}`, body);
   },
 
-  rejectStudentRequest: async function(requestId){
-    let body ={
-      "status": "rejected"
-    }
-
-    return this._put(`/requests/students/${requestId}`, body);
+    acceptTutorRequest: async function(requestId){
+    let body ={"status": "accepted"}
+    return this._put(`/requests/tutors/${requestId}`, body);
+  },
+  rejectTutorRequest: async function(requestId){
+    let body ={"status": "rejected"}
+    return this._put(`/requests/tutors/${requestId}`, body);
   },
 
   getMyProject: async function(){
