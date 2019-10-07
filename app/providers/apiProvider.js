@@ -98,6 +98,35 @@ const apiProvider = {
     }
   },
 
+  uploadDocument: async function(file){
+      // console.log("uploadDocument:file",file)
+      let token = await storageProvider.getToken();
+      let currentProjectId = await storageProvider.getCurrentProject();
+      let body = new FormData();
+      body.append('file', {uri: file.uri,name: file.name,filename :file.name,type: file.type});
+      body.append('Content-Type', 'application/pdf');
+
+    try {
+      let response = await fetch(
+        config.api.url+"/projects/"+currentProjectId+"/proposal",
+        {
+          method: 'put',
+          headers: {
+            "Content-Type": "multipart/form-data",
+            'Authorization':token,
+          },
+          body: body
+        }
+        );
+      let responseJson = await response.json();
+      return responseJson;
+    } 
+    catch (error) {
+      console.error(error);
+    }
+
+  },
+
 
   login: async function(userInfo) {
     let passbody= {
