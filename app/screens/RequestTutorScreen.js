@@ -75,15 +75,19 @@ export default class RequestTutorScreen extends React.Component {
     return request.status == 'pending'
   }
 
+
+
+  // {request.item.Project.Type.name}{`${request.item.Project.Creator.name} ${request.item.Project.Creator.surname}`}
+         
+
   renderRequest(request) {
     return (
       <View>
         <CardSection>
           <Text style={styles.type}>
-            {request.item.Project.Type.name}
-          </Text>
+            Cambiar API </Text>
           <Text style={styles.creator}>
-            {`${request.item.Project.Creator.name} ${request.item.Project.Creator.surname}`}
+            Cambiar API
           </Text>
           <Text style={styles.project}>
             {request.item.Project.name}

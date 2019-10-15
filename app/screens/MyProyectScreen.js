@@ -60,9 +60,8 @@ export default class MyProyectScreen extends React.Component {
 
   }
 
-  renderProjectInfo = (project) =>
-    (
-      <View style={{ flex: 1 }}>
+    renderProjectState = (project) =>(
+
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Badge
             style={{marginBottom: 12}}
@@ -73,17 +72,28 @@ export default class MyProyectScreen extends React.Component {
           />
           <Text style={styles.title}>{project.State.name}</Text>
         </View>
+
+      )
+
+  renderProjectInfo(){
+    console.log('renderProjectInfo: ', this.state)
+
+     return (
+      <View style={{ flex: 1 }}>
+      {this.renderProjectState(this.state.project)}
+
+
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
-          <Text style={styles.subTitle}>{project.name}</Text>
-          <Text style={styles.info}>{project.description}</Text>
+          <Text style={styles.subTitle}>{this.state.project.name}</Text>
+          <Text style={styles.info}>{this.state.project.description}</Text>
 
           <Text style={styles.subTitle}>{'Autores:'}</Text>
-          <Text style={styles.info}>{` - ${project.Creator.name} ${project.Creator.surname} (${project.Creator.email})`}</Text>
-          {project.Students.map(student => <Text style={styles.info}>{` - ${student.name} ${student.surname} (${student.email})`}</Text>)}
+          <Text style={styles.info}>{` - ${this.state.project.Creator.name} ${this.state.project.Creator.surname} (${this.state.project.Creator.email})`}</Text>
+          {this.state.project.Students.map(student => <Text style={styles.info}>{` - ${student.name} ${student.surname} (${student.email})`}</Text>)}
           
           <Text style={styles.subTitle}>{'Tutores:'}</Text>
-          <Text style={styles.info}>{` - ${project.Tutor.name} ${project.Tutor.surname} (${project.Tutor.email})`}</Text>
-          {project.Cotutors.map(cotutor => <Text style={styles.info}>{` - ${cotutor.name} ${cotutor.surname} (${cotutor.email})`}</Text>)}
+          <Text style={styles.info}>{` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email})`}</Text>
+          {this.state.project.Cotutors.map(cotutor => <Text style={styles.info}>{` - ${cotutor.name} ${cotutor.surname} (${cotutor.email})`}</Text>)}
 
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
             <View style={{ marginRight: 8 }}>
@@ -94,15 +104,28 @@ export default class MyProyectScreen extends React.Component {
               />
             </View>
             
-            {(this.state.project.Creator.id == this.state.user) ? <Button
-              onPress={() => this.UploadProjectModal.show({ editMode: true })}
-              title="Editar idea"
-              color={COLORS.primary}
-            /> : null}
+            {(this.state.project.Creator.id == this.state.user) ? this.renderCreatorButtons() : null}
           </View>
         </View>
       </View>
-      )
+      )   
+
+  }
+
+
+
+  renderCreatorButtons = () =>
+    (
+      <Button
+        onPress={() => this.UploadProjectModal.show({ editMode: true })}
+        title="Editar idea"
+        color={COLORS.primary}
+      />
+    )
+
+
+        // {this.state.project != null ? this.renderProjectInfo() : this.renderCreateProject()}
+
 
   renderCreateProject = () =>
     (
@@ -119,16 +142,19 @@ export default class MyProyectScreen extends React.Component {
     console.log('Render: ', this.state)
     return (
       <View style={styles.container}>
-      {this.state.project != null ? this.renderProjectInfo(this.state.project) : this.renderCreateProject()}
-      <UploadProjectModal
-        onCreate={this.createIdea}
-        onEdit={this.editIdea}
-        ref={ref => (this.UploadProjectModal = ref)}
-      />
-      <DeleteProjectModal
-        onSubmit={this.deleteIdea}
-        ref={ref => (this.DeleteProjectModal = ref)}
-      />
+
+        {this.state.project != null ? this.renderProjectInfo() : this.renderCreateProject()}
+
+        <UploadProjectModal
+          onCreate={this.createIdea}
+          onEdit={this.editIdea}
+          ref={ref => (this.UploadProjectModal = ref)}
+        />
+
+        <DeleteProjectModal
+          onSubmit={this.deleteIdea}
+          ref={ref => (this.DeleteProjectModal = ref)}
+        />
       </View>
       );
   };
