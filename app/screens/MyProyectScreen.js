@@ -8,6 +8,8 @@ import DeleteProjectModal from '../modals/DeleteProjectModal'
 
 import apiProvider from '../providers/apiProvider'
 import storageProvider from '../providers/storageProvider'
+import fileProvider from '../providers/fileProvider'
+
 
 export default class MyProyectScreen extends React.Component {
 
@@ -60,20 +62,13 @@ export default class MyProyectScreen extends React.Component {
 
   }
 
-    renderProjectState = (project) =>(
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Badge
-            style={{marginBottom: 12}}
-            value={project.State.id}
-            status="success"
-            badgeStyle={{ height: 66, width: 66, borderRadius: 90 }}
-            textStyle={{fontSize: 24}}
-          />
-          <Text style={styles.title}>{project.State.name}</Text>
-        </View>
+  async pickDocument(){
+     let file = await fileProvider.pickDocument();
+     let response = await apiProvider.uploadDocument(file);
+     console.log(response);
+   }
 
-      )
 
   renderProjectInfo(){
     console.log('renderProjectInfo: ', this.state)
@@ -81,6 +76,8 @@ export default class MyProyectScreen extends React.Component {
      return (
       <View style={{ flex: 1 }}>
       {this.renderProjectState(this.state.project)}
+
+      {(this.state.project.State.id == 2) ? this.renderUploadProposal() : null}
 
 
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
@@ -103,8 +100,9 @@ export default class MyProyectScreen extends React.Component {
                 color='red'
               />
             </View>
-            
-            {(this.state.project.Creator.id == this.state.user) ? this.renderCreatorButtons() : null}
+
+
+          {(this.state.project.Creator.id == this.state.user) ? this.renderCreatorButtons() : null}
           </View>
         </View>
       </View>
@@ -112,6 +110,22 @@ export default class MyProyectScreen extends React.Component {
 
   }
 
+
+
+    renderProjectState = (project) =>(
+
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Badge
+            style={{marginBottom: 12}}
+            value={project.State.id}
+            status="success"
+            badgeStyle={{ height: 66, width: 66, borderRadius: 90 }}
+            textStyle={{fontSize: 24}}
+          />
+          <Text style={styles.title}>{project.State.name}</Text>
+        </View>
+
+   )
 
 
   renderCreatorButtons = () =>
@@ -124,9 +138,17 @@ export default class MyProyectScreen extends React.Component {
     )
 
 
-        // {this.state.project != null ? this.renderProjectInfo() : this.renderCreateProject()}
+  renderUploadProposal=() =>(    
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button onPress={this.pickDocument} 
+      title="Subir Propuesta" 
+      color='green'
+      />
+      </View>
+  )
 
 
+     
   renderCreateProject = () =>
     (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
