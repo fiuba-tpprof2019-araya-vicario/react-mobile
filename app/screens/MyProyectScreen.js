@@ -93,16 +93,10 @@ export default class MyProyectScreen extends React.Component {
           {this.state.project.Cotutors.map(cotutor => <Text style={styles.info}>{` - ${cotutor.name} ${cotutor.surname} (${cotutor.email})`}</Text>)}
 
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-            <View style={{ marginRight: 8 }}>
-              <Button
-                onPress={() => this.DeleteProjectModal.show()}
-                title="Abandonar idea"
-                color='red'
-              />
-            </View>
 
+          {(this.state.project.State.id <4) ? this.renderLeaveButton() : null}
 
-          {(this.state.project.Creator.id == this.state.user) ? this.renderCreatorButtons() : null}
+          {(this.state.project.Creator.id == this.state.user && this.state.project.State.id <3) ? this.renderEditButton() : null}
           </View>
         </View>
       </View>
@@ -128,7 +122,22 @@ export default class MyProyectScreen extends React.Component {
    )
 
 
-  renderCreatorButtons = () =>
+  renderLeaveButton = () =>
+  (
+
+            <View style={{ marginRight: 8 }}>
+              <Button
+                onPress={() => this.DeleteProjectModal.show()}
+                title="Abandonar idea"
+                color='red'
+              />
+            </View>
+
+
+    )
+
+
+  renderEditButton = () =>
     (
       <Button
         onPress={() => this.UploadProjectModal.show({ editMode: true })}
