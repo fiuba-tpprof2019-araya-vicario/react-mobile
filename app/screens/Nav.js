@@ -85,7 +85,6 @@ const NavStudent = createAppContainer(
 const NavTutor = createAppContainer(
   createBottomTabNavigator(
   {
-    'Mi Proyecto': MyProyectScreen,
     Tutorias: RequestTutorScreen,
     Ideas: IdeasScreen,
     Requer: RequirementScreen,

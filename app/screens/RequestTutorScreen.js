@@ -6,6 +6,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AcceptRequestModal from '../modals/AcceptRequestModal'
 import RejectRequestModal from '../modals/RejectRequestModal'
+
+
+import AcceptRequestProposalModal from '../modals/AcceptRequestProposalModal'
+
 import COLORS from '../util/colors';
 
 export default class RequestTutorScreen extends React.Component {
@@ -15,6 +19,11 @@ export default class RequestTutorScreen extends React.Component {
     this.acceptRequest = this.acceptRequest.bind(this)
     this.rejectRequest = this.rejectRequest.bind(this)
     this.renderRequest = this.renderRequest.bind(this)
+
+    this.acceptRequestProposal = this.acceptRequestProposal.bind(this)
+    // this.rejectRequestProposal = this.rejectRequestProposal.bind(this)
+    // this.renderRequestProposal = this.renderRequestProposal.bind(this)
+
     this.state = {
       requests:[],
       project:null,
@@ -50,6 +59,25 @@ export default class RequestTutorScreen extends React.Component {
     this.RejectRequestModal.close()
   }
 
+  async acceptRequestProposal(requestId){
+    let acceptResponse = await apiProvider.acceptTutorRequestProposal(requestId);
+    // storageProvider.storeCurrentProject(createResponse.data)
+    console.log('acceptResponse:',acceptResponse)
+    await this.getTutorRequests();
+    this.AcceptRequestProposalModal.close()
+  }
+
+  async rejectTutorRequestProposal(requestId){
+    let rejectResponse = await apiProvider.rejectTutorRequest(requestId);
+    // storageProvider.storeCurrentProject(createResponse.data)
+    console.log('rejectResponse:',rejectResponse)
+    await this.getTutorRequests();
+    this.RejectRequestModal.close()
+  }
+
+
+
+
   keyExtractor = (request) => request.id;
 
   renderHeader() {
@@ -75,6 +103,21 @@ export default class RequestTutorScreen extends React.Component {
     return request.status == 'pending'
   }
 
+  requestProposalAccepted(request){
+    return request.accepted_proposal == 'accepted'
+  }
+
+  requestProposalRejected(request){
+    return request.accepted_proposal == 'rejected'
+  }
+
+  requestProposalPending(request){
+    return request.accepted_proposal == 'pending'
+  }
+
+
+
+// accepted_proposal
 
 
   // {request.item.Project.Type.name}{`${request.item.Project.Creator.name} ${request.item.Project.Creator.surname}`}
@@ -92,10 +135,32 @@ export default class RequestTutorScreen extends React.Component {
           <Text style={styles.project}>
             {request.item.Project.name}
           </Text>
+
+
+          {this.requestProposalPending(request.item) ?
+          <View style={{ flex: 3 }}>
+            <TouchableOpacity style={{ flex: 1.5, paddingLeft: 12 }} 
+              onPress={() => this.AcceptRequestProposalModal.show(request.item.id)}
+            >
+              <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ flex: 1.5 }} 
+              onPress={() => this.RejectRequestProposalModal.show(request.item.id)}
+            >
+              <Ionicons name='ios-close' size={40} color='#bb2124' />
+            </TouchableOpacity>
+          </View> :
+          this.requestProposalAccepted(request.item) ?
+          <Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text> :
+          <Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>
+        }
+
+
+
           {this.requestPending(request.item) ?
           <View style={{ flex: 3 }}>
             <TouchableOpacity style={{ flex: 1.5, paddingLeft: 12 }} 
-              onPress={() => this.AcceptRequestModal.show(request.item.id)}
+              onPress={() => this.AcceptRequestProposalModal.show(request.item.id)}
             >
               <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
             </TouchableOpacity>
@@ -124,6 +189,15 @@ export default class RequestTutorScreen extends React.Component {
         keyExtractor={this.keyExtractor}
         renderItem={this.renderRequest}
       />
+
+
+     
+      <AcceptRequestProposalModal
+        onSubmit={this.acceptRequestProposal}
+        ref={ref => (this.AcceptRequestProposalModal = ref)}
+      />
+
+
       <AcceptRequestModal
         onSubmit={this.acceptRequest}
         ref={ref => (this.AcceptRequestModal = ref)}

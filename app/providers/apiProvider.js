@@ -189,8 +189,8 @@ const apiProvider = {
     return this._put(`/requests/tutors/${requestId}`, body);
   },
 
-  acceptTutorProposal: async function(requestID){
-    let body ={"status": "accepted"}
+  acceptTutorRequestProposal: async function(requestId){
+    let body={ "accepted_proposal": "accepted" }
     return this._put(`/requests/tutors/${requestId}`, body);
 
   },
