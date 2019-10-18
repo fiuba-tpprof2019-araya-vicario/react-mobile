@@ -84,13 +84,26 @@ export default class MyProyectScreen extends React.Component {
           <Text style={styles.subTitle}>{this.state.project.name}</Text>
           <Text style={styles.info}>{this.state.project.description}</Text>
 
+
           <Text style={styles.subTitle}>{'Autores:'}</Text>
-          <Text style={styles.info}>{` - ${this.state.project.Creator.name} ${this.state.project.Creator.surname} (${this.state.project.Creator.email})`}</Text>
-          {this.state.project.Students.map(student => <Text style={styles.info}>{` - ${student.name} ${student.surname} (${student.email})`}</Text>)}
+          <Text style={styles.info}>
+            {` - ${this.state.project.Creator.name} ${this.state.project.Creator.surname} (${this.state.project.Creator.email})`}
+          </Text>
+          {this.state.project.Students.map(student => 
+            <Text style={styles.info}>
+            {` - ${student.name} ${student.surname} (${student.email}) (${student.StudentRequests[0].status})`}
+            </Text>)}
           
           <Text style={styles.subTitle}>{'Tutores:'}</Text>
-          <Text style={styles.info}>{` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email})`}</Text>
-          {this.state.project.Cotutors.map(cotutor => <Text style={styles.info}>{` - ${cotutor.name} ${cotutor.surname} (${cotutor.email})`}</Text>)}
+          <Text style={styles.info}>
+          {` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email} (${this.state.project.Tutor.TutorRequests[0].status})`}
+          </Text>
+          {this.state.project.Cotutors.map(cotutor =>
+           <Text style={styles.info}>
+           {` - ${cotutor.name} ${cotutor.surname} (${cotutor.email}) (${cotutor.TutorRequests[0].status})`}
+           </Text>)}
+
+
 
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
 
