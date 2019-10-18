@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
+import { Button,StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import CardSection from '../components/CardSection'
 import apiProvider from '../providers/apiProvider'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -101,15 +101,21 @@ proposalUploaded(request){
     return request.accepted_proposal == 'pending'
   }
 
+  viewProjectDetails(request){
+      this.props.navigation.navigate('Detalles', { projectId: request.Project.id })
+  }
+
 
 
 
   renderHeader() {
     return (
       <View style={styles.header}>
-        <Text style={styles.projectTitle}>Tipo</Text>
+      <Text style={styles.typeTitle}>Ver</Text>
+        <Text style={styles.typeTitle}>Tipo</Text>
           <Text style={styles.projectTitle}>Proyecto</Text>
           <Text style={styles.statusTitle}>Estado</Text>
+          
       </View> 
     );
   }
@@ -171,7 +177,8 @@ renderRequestProposalStatus(request){
     return (
          <View>
         <CardSection>
-          <Text style={styles.project}>
+            <Button style={styles.type} onPress={() => this.viewProjectDetails(request.item)} title="Ver" />
+          <Text style={styles.type}>
             Tutoria
           </Text>
           <Text style={styles.project}>
@@ -188,6 +195,8 @@ renderRequestProposalStatus(request){
     return (
          <View>
         <CardSection>
+          <Button style={styles.type} onPress={() => this.viewProjectDetails(request.item)} title="Ver" />
+
           <Text style={styles.project}>
             Entrega Propuesta
           </Text>
@@ -295,7 +304,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 14,
     paddingLeft: 0,
-    flex: 1
+    flex: 2
   },
 
   statusTitle: {
@@ -305,14 +314,21 @@ const styles = StyleSheet.create({
     flex: 3
   },
 
-  project: {
+  type: {
     fontSize: 12,
     paddingLeft: 0,
     flex: 1
   },
+
+  project: {
+    fontSize: 12,
+    paddingLeft: 0,
+    flex: 2
+  },
   status: {
     fontSize: 12,
     paddingLeft: 0,
-    flex:  3
+    flex:  3,
+
   }
 })

@@ -10,6 +10,10 @@ import StartProyectScreen from '../screens/StartProyectScreen'
 import RequestScreen from '../screens/RequestScreen'
 import IdeasScreen from '../screens/IdeasScreen'
 
+
+
+import TutorProyectDetailsScreen from '../screens/TutorProyectDetailsScreen'
+
 import RequirementScreen from '../screens/RequirementScreen'
 import RequestTutorScreen from '../screens/RequestTutorScreen'
 
@@ -82,10 +86,26 @@ const NavStudent = createAppContainer(
 );
 
 
+const TutoriasStack = createStackNavigator({
+  Tutorias: { screen: RequestTutorScreen},
+  Detalles: { screen: TutorProyectDetailsScreen },
+
+},
+    //options
+    {
+      initialRouteName: 'Tutorias',
+      headerMode: 'none',
+      defaultNavigationOptions: ({ navigation }) => ({
+        gesturesEnabled: true,
+        headerMode: 'none'
+      })
+    }
+);
+
 const NavTutor = createAppContainer(
   createBottomTabNavigator(
   {
-    Tutorias: RequestTutorScreen,
+    Tutorias: TutoriasStack,
     Ideas: IdeasScreen,
     Requer: RequirementScreen,
     Perfil: ProfileScreen,
