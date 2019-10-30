@@ -210,6 +210,13 @@ const apiProvider = {
     return project.data;
 
   },
+  getProject: async function(projectId){
+
+    let project = await this._get('/projects/'+projectId);
+    // console.log('apiProvider:project:',project);
+    return project.data;
+
+  },
   getStudents: async function(){
     return this._get('/users?type=student');
   },
