@@ -40,7 +40,7 @@ export default class TutorProyectDetailsScreen extends React.Component {
 
      return (
       <View style={{ flex: 1 }}>
-
+      {this.renderProjectState(this.state.project)}
 
 
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
