@@ -147,7 +147,7 @@ renderRequestColaborationStatus(request){
   }
 
 renderRequestProposalStatus(request){
-  if(this.requestPending(request.item)){
+  if(this.requestProposalPending(request.item)){
     return(
           <View style={{ flex: 3, flexDirection:'row' }}>
             <TouchableOpacity style={{ flex: 1.5 }} 
@@ -164,9 +164,9 @@ renderRequestProposalStatus(request){
           </View> 
     )
   }
-  else if(this.requestAccepted(request.item))
+  else if(this.requestProposalAccepted(request.item))
     return (<Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text>)
-   else if(this.requestRejected(request.item))
+   else if(this.requestProposalRejected(request.item))
     return (<Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>)
    else return null;
   }
@@ -203,7 +203,7 @@ renderRequestProposalStatus(request){
           <Text style={styles.project}>
             {request.item.Project.name}
           </Text>
-        {this.renderRequestColaborationStatus(request)}
+        {this.renderRequestProposalStatus(request)}
         </CardSection>
       </View> 
       );
@@ -238,11 +238,18 @@ renderRequestProposalStatus(request){
         if(!this.proposalUploaded(request))
           return (
             <View>
+            <Text style={styles.project}>
+            Colaboracion
+          </Text>
             {this.renderRequestColaboration(request)}
             </View>)
       else
         return(
           <View>
+            <Text style={styles.project}>
+            Subir propuesta
+          </Text>
+
           {this.renderRequestProposal(request)}
           </View>
           )
