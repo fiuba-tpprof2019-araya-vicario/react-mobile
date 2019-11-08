@@ -86,10 +86,10 @@ export default class RequestTutorScreen extends React.Component {
     return request.status == 'pending'
   }
 
-proposalUploaded(request){
-  console.log('proposalUploaded request',request.item)
+  proposalUploaded(request){
+    console.log('proposalUploaded request',request.item)
     return request.item.Project.proposal_url!=null;
-}
+  }
 
   requestProposalAccepted(request){
     return request.accepted_proposal == 'accepted'
@@ -102,7 +102,7 @@ proposalUploaded(request){
   }
 
   viewProjectDetails(request){
-      this.props.navigation.navigate('Detalles', { projectId: request.Project.id })
+    this.props.navigation.navigate('Detalles', { projectId: request.Project.id })
   }
 
 
@@ -111,81 +111,83 @@ proposalUploaded(request){
   renderHeader() {
     return (
       <View style={styles.header}>
-      <Text style={styles.typeTitle}>Ver</Text>
-        <Text style={styles.typeTitle}>Tipo</Text>
-          <Text style={styles.projectTitle}>Proyecto</Text>
-          <Text style={styles.statusTitle}>Estado</Text>
-          
+      <Text style={styles.typeTitle}>Tipo</Text>
+      <Text style={styles.projectTitle}>Proyecto</Text>
+      <Text style={styles.statusTitle}>Estado</Text>
+
+      <Text style={styles.typeTitle}></Text>
+      
       </View> 
-    );
+      );
   }
 
 
-renderRequestColaborationStatus(request){
-  if(this.requestPending(request.item)){
-    return(
-          <View style={{ flex: 3, flexDirection:'row' }}>
-            <TouchableOpacity style={{ flex: 1.5 }} 
-              onPress={() => this.AcceptRequestModal.show(request.item.id)}
-            >
-              <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
-            </TouchableOpacity>
+  renderRequestColaborationStatus(request){
+    if(this.requestPending(request.item)){
+      return(
+        <View style={{ flex: 3, flexDirection:'row' }}>
+        <TouchableOpacity style={{ flex: 1.5 }} 
+        onPress={() => this.AcceptRequestModal.show(request.item.id)}
+        >
+        <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
+        </TouchableOpacity>
 
-            <TouchableOpacity style={{ flex: 1.5 }} 
-              onPress={() => this.RejectRequestModal.show(request.item.id)}
-            >
-              <Ionicons name='ios-close' size={40} color='#bb2124' />
-            </TouchableOpacity>
-          </View> 
-    )
-  }
-  else if(this.requestAccepted(request.item))
-    return (<Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text>)
-   else if(this.requestRejected(request.item))
-    return (<Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>)
-   else return null;
+        <TouchableOpacity style={{ flex: 1.5 }} 
+        onPress={() => this.RejectRequestModal.show(request.item.id)}
+        >
+        <Ionicons name='ios-close' size={40} color='#bb2124' />
+        </TouchableOpacity>
+        </View> 
+        )
+    }
+    else if(this.requestAccepted(request.item))
+      return (<Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text>)
+    else if(this.requestRejected(request.item))
+      return (<Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>)
+    else return null;
   }
 
-renderRequestProposalStatus(request){
-  if(this.requestProposalPending(request.item)){
-    return(
-          <View style={{ flex: 3, flexDirection:'row' }}>
-            <TouchableOpacity style={{ flex: 1.5 }} 
-              onPress={() => this.AcceptRequestProposalModal.show(request.item.id)}
-            >
-              <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
-            </TouchableOpacity>
+  renderRequestProposalStatus(request){
+    if(this.requestProposalPending(request.item)){
+      return(
+        <View style={{ flex: 3, flexDirection:'row' }}>
+        <TouchableOpacity style={{ flex: 1.5 }} 
+        onPress={() => this.AcceptRequestProposalModal.show(request.item.id)}
+        >
+        <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
+        </TouchableOpacity>
 
-            <TouchableOpacity style={{ flex: 1.5 }} 
-              onPress={() => this.rejectTutorRequestProposal.show(request.item.id)}
-            >
-              <Ionicons name='ios-close' size={40} color='#bb2124' />
-            </TouchableOpacity>
-          </View> 
-    )
-  }
-  else if(this.requestProposalAccepted(request.item))
-    return (<Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text>)
-   else if(this.requestProposalRejected(request.item))
-    return (<Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>)
-   else return null;
+        <TouchableOpacity style={{ flex: 1.5 }} 
+        onPress={() => this.rejectTutorRequestProposal.show(request.item.id)}
+        >
+        <Ionicons name='ios-close' size={40} color='#bb2124' />
+        </TouchableOpacity>
+        </View> 
+        )
+    }
+    else if(this.requestProposalAccepted(request.item))
+      return (<Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text>)
+    else if(this.requestProposalRejected(request.item))
+      return (<Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>)
+    else return null;
   }
 
 
 
   renderRequestColaboration(request){
     return (
-         <View>
-        <CardSection>
+      <View>
+      <CardSection>
+      <Text style={styles.type}>
+      Tutoria
+      </Text>
+      <Text style={styles.project}>
+      {request.item.Project.name}
+      </Text>
+      {this.renderRequestColaborationStatus(request)}
             <Button style={styles.type} onPress={() => this.viewProjectDetails(request.item)} title="Ver" />
-          <Text style={styles.type}>
-            Tutoria
-          </Text>
-          <Text style={styles.project}>
-            {request.item.Project.name}
-          </Text>
-        {this.renderRequestColaborationStatus(request)}
-        </CardSection>
+
+      </CardSection>
       </View> 
       );
   }
@@ -193,66 +195,45 @@ renderRequestProposalStatus(request){
 
   renderRequestProposal(request){
     return (
-         <View>
-        <CardSection>
-          <Button style={styles.type} onPress={() => this.viewProjectDetails(request.item)} title="Ver" />
+      <View>
+      <CardSection>
 
-          <Text style={styles.project}>
-            Entrega Propuesta
-          </Text>
-          <Text style={styles.project}>
-            {request.item.Project.name}
-          </Text>
-        {this.renderRequestProposalStatus(request)}
-        </CardSection>
+      <Text style={styles.project}>
+      Entrega Propuesta
+      </Text>
+      <Text style={styles.project}>
+      {request.item.Project.name}
+      </Text>
+      {this.renderRequestProposalStatus(request)}
+      <Button style={styles.type} onPress={() => this.viewProjectDetails(request.item)} title="Ver" />
+
+
+      </CardSection>
       </View> 
       );
   }
 
 
 
-      //  else if(this.requestProposalPending(request.item)){
+  renderRequest(request) {
+    if(!this.proposalUploaded(request))
+      return (
+        <View>
+        <Text style={styles.project}>
+        {/*Pedido de Colaboracion*/}
+        </Text>
+        {this.renderRequestColaboration(request)}
+        </View>)
+    else
+      return(
+        <View>
+        <Text style={styles.project}>
+        {/*Aceptacion de propuesta*/}
+        </Text>
 
-    // return (
-
-    //       <View style={{ flex: 3 }}>
-    //         <TouchableOpacity style={{ flex: 1.5, paddingLeft: 12 }} 
-    //           onPress={() => this.AcceptRequestProposalModal.show(request.item.id)}
-    //         >
-    //           <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
-    //         </TouchableOpacity>
-    //         <TouchableOpacity style={{ flex: 1.5 }} 
-    //           onPress={() => this.RejectRequestProposalModal.show(request.item.id)}
-    //         >
-    //           <Ionicons name='ios-close' size={40} color='#bb2124' />
-    //         </TouchableOpacity>
-    //       </View> :
-    //       this.requestProposalAccepted(request.item) ?
-    //       <Text style={[styles.status, {color: COLORS.success}]}>Aceptada</Text> :
-    //       <Text style={[styles.status, {color: COLORS.danger}]}>Rechazada</Text>
-        
-    //        )
-    //  }
-
-      renderRequest(request) {
-        if(!this.proposalUploaded(request))
-          return (
-            <View>
-            <Text style={styles.project}>
-            Colaboracion
-          </Text>
-            {this.renderRequestColaboration(request)}
-            </View>)
-      else
-        return(
-          <View>
-            <Text style={styles.project}>
-            Subir propuesta
-          </Text>
-
-          {this.renderRequestProposal(request)}
-          </View>
-          )
+        {this.renderRequestProposal(request)}
+        </View>
+        )
 
   }
 
@@ -263,24 +244,24 @@ renderRequestProposalStatus(request){
       <View style={{ flex: 1 }}>
       <Text>Mis Solicitudes de Tutor</Text>
       <FlatList
-        data={this.state.requests}
-        ListHeaderComponent={this.renderHeader}
-        keyExtractor={this.keyExtractor}
-        renderItem={this.renderRequest}
+      data={this.state.requests}
+      ListHeaderComponent={this.renderHeader}
+      keyExtractor={this.keyExtractor}
+      renderItem={this.renderRequest}
       />
 
       <AcceptRequestProposalModal
-        onSubmit={this.acceptRequestProposal}
-        ref={ref => (this.AcceptRequestProposalModal = ref)}
+      onSubmit={this.acceptRequestProposal}
+      ref={ref => (this.AcceptRequestProposalModal = ref)}
       />
 
       <AcceptRequestModal
-        onSubmit={this.acceptRequest}
-        ref={ref => (this.AcceptRequestModal = ref)}
+      onSubmit={this.acceptRequest}
+      ref={ref => (this.AcceptRequestModal = ref)}
       />
       <RejectRequestModal
-        onSubmit={this.rejectRequest}
-        ref={ref => (this.RejectRequestModal = ref)}
+      onSubmit={this.rejectRequest}
+      ref={ref => (this.RejectRequestModal = ref)}
       />
       </View>
       );
@@ -289,11 +270,11 @@ renderRequestProposalStatus(request){
 
 const styles = StyleSheet.create({
   header: {
-		padding: 5,
-		backgroundColor: '#fff',
-		justifyContent: 'flex-start',
-		flexDirection: 'row',
-		position: 'relative'
+    padding: 5,
+    backgroundColor: '#fff',
+    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    position: 'relative'
   },
   creatorTitle: {
     fontWeight: 'bold',

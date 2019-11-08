@@ -16,6 +16,7 @@ import TutorProyectDetailsScreen from '../screens/TutorProyectDetailsScreen'
 
 import RequirementScreen from '../screens/RequirementScreen'
 import RequestTutorScreen from '../screens/RequestTutorScreen'
+import RequestCCScreen from '../screens/RequestCCScreen'
 
 import ProfileScreen from '../screens/ProfileScreen'
 import COLORS from '../util/colors'
@@ -24,7 +25,7 @@ import COLORS from '../util/colors'
 
 const HomeIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like react context api, redux, mobx or event emitters.
-  return <IconWithBadge {...props} badgeCount={3} />;
+  return <IconWithBadge {...props} badgeCount={1} />;
 };
 
 
@@ -102,6 +103,25 @@ const TutoriasStack = createStackNavigator({
     }
 );
 
+const RequestCCStack = createStackNavigator({
+  Tutorias: { screen: RequestCCScreen},
+  Detalles: { screen: TutorProyectDetailsScreen },
+
+},
+    //options
+    {
+      initialRouteName: 'Tutorias',
+      headerMode: 'none',
+      defaultNavigationOptions: ({ navigation }) => ({
+        gesturesEnabled: true,
+        headerMode: 'none'
+      })
+    }
+);
+
+
+
+
 const NavTutor = createAppContainer(
   createBottomTabNavigator(
   {
@@ -121,7 +141,7 @@ const NavTutor = createAppContainer(
 const NavCC = createAppContainer(
   createBottomTabNavigator(
   {
-    Tutorias: RequestTutorScreen,
+    Tutorias: RequestCCScreen,
     Perfil: ProfileScreen,
   },
   {

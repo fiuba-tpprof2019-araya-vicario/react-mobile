@@ -217,6 +217,14 @@ const apiProvider = {
     return project.data;
 
   },
+  getProjectsOfCC: async function(projectId){
+
+    let projects = await this._get('/projects/?state=3');
+    // console.log('apiProvider:project:',project);
+    return projects;
+
+  },
+
   getStudents: async function(){
     return this._get('/users?type=student');
   },
