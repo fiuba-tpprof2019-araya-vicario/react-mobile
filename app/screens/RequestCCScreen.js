@@ -16,13 +16,10 @@ export default class RequestCCScreen extends React.Component {
 
   constructor(props) {
     super()
-    // this.acceptRequest = this.acceptRequest.bind(this)
-    // this.rejectRequest = this.rejectRequest.bind(this)
-    // this.renderRequest = this.renderRequest.bind(this)
+    this.viewProjectDetails = this.viewProjectDetails.bind(this)
+    this.renderRequest= this.renderRequest.bind(this)
 
-    // this.acceptRequestProposal = this.acceptRequestProposal.bind(this)
-    // this.rejectRequestProposal = this.rejectRequestProposal.bind(this)
-    // this.renderRequestX = this.renderRequestX.bind(this)
+
 
     this.state = {
       requests:[],
@@ -42,12 +39,8 @@ export default class RequestCCScreen extends React.Component {
     let response = await apiProvider.getProjectsOfCC();
     // console.log('Response request ', response)
     this.setState({ requests: response.data })
-  }
+  };
 
-
-   async viewProjectDetails(request){
-    this.props.navigation.navigate('Detalles', { projectId: request.Project.id })
-  }
 
 
   renderHeader() {
@@ -58,12 +51,16 @@ export default class RequestCCScreen extends React.Component {
       <Text style={styles.typeTitle}>Ver</Text>
       </View> 
       );
-  }
+  };
+
+  viewProjectDetails (request){
+    this.props.navigation.navigate('DetallesCC', { projectId: request.id })
+  };
 
 
 
   renderRequest(request) {
-      return (
+    return (
       <View>
       <CardSection>
       <Text style={styles.type}>
@@ -98,6 +95,9 @@ export default class RequestCCScreen extends React.Component {
 
 
 }
+
+
+
 
 const styles = StyleSheet.create({
   header: {

@@ -70,7 +70,8 @@ export default class CCProyectDetailsScreen extends React.Component {
 
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
 
-          {/*{(this.state.project.State.id <4) ? this.renderLeaveButton() : null}*/}
+          {this.renderReject()}
+          {this.renderAccept()}
 
           </View>
         </View>
@@ -91,12 +92,35 @@ export default class CCProyectDetailsScreen extends React.Component {
           />
           <Text style={styles.title}>{project.State.name}</Text>
         </View>
-
-   )
-
+   );
 
 
-     render() {
+  renderReject(){
+      return (
+        <View style={{ marginRight: 8 }}>
+        <Button
+           title="Desaprobar"
+          color='red'
+          />
+      </View>
+      );
+  }
+
+
+  renderAccept(){
+    return (
+      <View>
+      <Button
+        title="Aceptar"
+        color={COLORS.primary}
+      />
+      </View>
+      );
+
+  } 
+
+
+  render() {
     return (
       <View style={styles.container}>
       <Text>Detalles</Text>

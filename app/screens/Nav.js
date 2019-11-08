@@ -13,6 +13,10 @@ import IdeasScreen from '../screens/IdeasScreen'
 
 
 import TutorProyectDetailsScreen from '../screens/TutorProyectDetailsScreen'
+import CCProyectDetailsScreen from '../screens/CCProyectDetailsScreen'
+
+
+
 
 import RequirementScreen from '../screens/RequirementScreen'
 import RequestTutorScreen from '../screens/RequestTutorScreen'
@@ -105,7 +109,7 @@ const TutoriasStack = createStackNavigator({
 
 const RequestCCStack = createStackNavigator({
   Tutorias: { screen: RequestCCScreen},
-  Detalles: { screen: TutorProyectDetailsScreen },
+  DetallesCC: { screen: CCProyectDetailsScreen },
 
 },
     //options
@@ -141,7 +145,7 @@ const NavTutor = createAppContainer(
 const NavCC = createAppContainer(
   createBottomTabNavigator(
   {
-    Tutorias: RequestCCScreen,
+    Tutorias: RequestCCStack,
     Perfil: ProfileScreen,
   },
   {
