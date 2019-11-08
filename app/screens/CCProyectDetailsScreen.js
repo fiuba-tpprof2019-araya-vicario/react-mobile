@@ -4,6 +4,8 @@ import {StyleSheet,Text,Button,View} from 'react-native';
 import { Badge } from 'react-native-elements'
 import COLORS from '../util/colors'
 
+import DeleteProjectModal from '../modals/DeleteProjectModal'
+
 export default class CCProyectDetailsScreen extends React.Component {
 
   constructor(props) {
@@ -30,6 +32,15 @@ export default class CCProyectDetailsScreen extends React.Component {
     const project = await apiProvider.getProject(projectId);
     console.log('project: ', project)
     this.setState({ project });
+  }
+
+  async deleteIdea(){
+    let deleteResponse = await apiProvider.deleteIdea(this.state.project.id);
+    storageProvider.clearCurrentProject()
+    console.log('deleteIdea:', deleteResponse)
+    await this.updateProject();
+    this.DeleteProjectModal.close()
+
   }
 
 
@@ -99,6 +110,8 @@ export default class CCProyectDetailsScreen extends React.Component {
       return (
         <View style={{ marginRight: 8 }}>
         <Button
+          onPress={() => this.DeleteProjectModal.show()}
+
            title="Desaprobar"
           color='red'
           />
@@ -111,6 +124,8 @@ export default class CCProyectDetailsScreen extends React.Component {
     return (
       <View>
       <Button
+        onPress={() => this.DeleteProjectModal.show()}
+
         title="Aceptar"
         color={COLORS.primary}
       />
@@ -127,6 +142,10 @@ export default class CCProyectDetailsScreen extends React.Component {
 
        {this.state.project != null ? this.renderProjectInfo() : null}
 
+        <DeleteProjectModal
+          onSubmit={this.deleteIdea}
+          ref={ref => (this.DeleteProjectModal = ref)}
+        />
 
       </View>
       );

@@ -191,7 +191,7 @@ export default class UploadProjectModal extends React.Component {
         items={this.type_proyect}
         uniqueKey="id"
         subKey="children"
-        selectText="Tipo:"
+        selectText="Seleccione Tipo"
         single={true}
         colors={{primary: COLORS.primary}}
         showDropDowns={false}
@@ -207,7 +207,7 @@ export default class UploadProjectModal extends React.Component {
         subKey="children"
         style={styles.picker}
         colors={{primary: COLORS.primary}}
-        selectText="Co Autores:"
+        selectText="Seleccione Co Autores"
         showDropDowns={false}
         readOnlyHeadings={true}
         onSelectedItemsChange={this.onStudentSelect}
@@ -221,7 +221,7 @@ export default class UploadProjectModal extends React.Component {
         subKey="children"
         style={styles.picker}
         colors={{primary: COLORS.primary}}
-        selectText="Tutores:"
+        selectText="Seleccione Tutores"
         single={true}
         showDropDowns={false}
         readOnlyHeadings={true}
@@ -236,7 +236,7 @@ export default class UploadProjectModal extends React.Component {
         subKey="children"
         style={styles.picker}
         colors={{primary: COLORS.primary}}
-        selectText="Carreras:"
+        selectText="Seleccione Carreras"
         showDropDowns={false}
         readOnlyHeadings={true}
         onSelectedItemsChange={this.onCarreerSelect}
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 22,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
@@ -304,7 +304,17 @@ const styles = StyleSheet.create({
   },
   
   titleInput: { height: 40, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8, width:"80%" },
-  descriptionInput: { width:"90%",height: 200, borderColor: 'gray', borderWidth: 0.5, marginBottom: 8 },
+  descriptionInput: { 
+    width:"90%",height: 200, 
+    borderColor: 'gray', 
+    borderWidth: 0.5, 
+    marginBottom: 8 ,
+    // justifyContent: 'flex-start',
+    // alignItems: 'flex-start',
+    textAlignVertical: 'top'
+
+  },
+
   bottomModal: {
     justifyContent: 'flex-end',
     margin: 0,
