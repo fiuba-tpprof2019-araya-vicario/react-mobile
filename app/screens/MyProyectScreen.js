@@ -18,6 +18,7 @@ export default class MyProyectScreen extends React.Component {
     this.createIdea = this.createIdea.bind(this);
     this.editIdea = this.editIdea.bind(this);
     this.deleteIdea = this.deleteIdea.bind(this);
+    this.pickDocument= this.pickDocument.bind(this);
     this.state = {
       fileUrl:"",
       project:null,
@@ -66,7 +67,8 @@ export default class MyProyectScreen extends React.Component {
   async pickDocument(){
      let file = await fileProvider.pickDocument();
      let response = await apiProvider.uploadDocument(file);
-     console.log(response);
+     await this.updateProject();
+     console.log('response from picker',response);
    }
 
 
@@ -77,8 +79,7 @@ export default class MyProyectScreen extends React.Component {
       <View style={{ flex: 1 }}>
       {this.renderProjectState(this.state.project)}
 
-      {(this.state.project.State.id == 2) ? this.renderUploadProposal() : null}
-
+      {(this.state.project.State.id == 2) ? (   this.state.project.proposal_url != null ? this.renderUploadProposalEdit() : this.renderUploadProposalNew()) : null}
 
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
           <Text style={styles.subTitle}>{this.state.project.name}</Text>
@@ -160,14 +161,34 @@ export default class MyProyectScreen extends React.Component {
     )
 
 
-  renderUploadProposal=() =>(    
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+  renderUploadProposalNew=() =>(    
+       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Button onPress={this.pickDocument} 
       title="Subir Propuesta" 
       color='green'
       />
+      <Text>
+      Seleccione el documento de la propuesta a subir
+      </Text>
       </View>
   )
+
+  renderUploadProposalEdit=() =>(    
+       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button onPress={this.pickDocument} 
+      title="Editar Propuesta" 
+      color='green'
+      />
+      <Text>
+      Link: {this.state.project.proposal_url}
+      </Text>
+      </View>
+  )
+
+
+
+
 
 
      

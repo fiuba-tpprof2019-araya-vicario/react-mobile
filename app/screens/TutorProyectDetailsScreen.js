@@ -67,6 +67,20 @@ export default class TutorProyectDetailsScreen extends React.Component {
            </Text>)}
 
 
+          {this.state.project.proposal_url != null ? 
+            (
+              <View>
+             <Text style={styles.subTitle}>
+             Propuesta:
+             </Text>
+            <Text style={styles.info}>
+            {this.state.project.proposal_url}
+            </Text>
+            </View>
+             ) : null}
+
+
+
 
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
 
