@@ -183,8 +183,17 @@ const apiProvider = {
     return this._put(`/requests/students/${requestId}`, body);
   },
 
-    acceptTutorRequest: async function(requestId){
+  acceptProposalStudentRequest: async function(requestId){
+    let body ={ "accepted_proposal": "accepted" }
+    return this._put(`/requests/students/${requestId}`, body);
+  },
+  
+  rejectProposalStudentRequest: async function(requestId){
+    let body ={ "accepted_proposal": "rejected"}
+    return this._put(`/requests/students/${requestId}`, body);
+  },
 
+  acceptTutorRequest: async function(requestId){
     let body= {"type": "tutor", "status": "accepted"}
     return this._put(`/requests/tutors/${requestId}`, body);
   },

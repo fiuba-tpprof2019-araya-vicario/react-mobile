@@ -9,22 +9,26 @@ export default class RejectRequestModal extends Component {
     super();
     this.state = {
       visibleModal: null,
-      requestId: null
+      request: null
     };
   };
 
-  show(requestId){
-    this.setState({ visibleModal: 'backdropPress', requestId });
+  show(request){
+    this.setState({ visibleModal: 'backdropPress', request });
   };
 
   close(){
-    this.setState({ visibleModal: null, requestId: null });
+    this.setState({ visibleModal: null, request: null });
   };
 
   renderModalContent = () => (
     <View style={styles.content}>
-      <Text style={styles.title}>Rechazar pedido de colaboración</Text>
-      <Text style={styles.subTitle}>¿Estás seguro de que quieres rechazar el pedido para trabajr en el proyecto?</Text>
+      {this.state.request != null && this.state.request.status == 'pending' ?
+      <Text style={styles.title}>Rechazar pedido de colaboración</Text> :
+      <Text style={styles.title}>Rechazar propuesta</Text> }
+      {this.state.request != null && this.state.request.status == 'pending' ?
+      <Text style={styles.subTitle}>¿Estás seguro de que quieres rechazar el pedido para trabajr en el proyecto?</Text> :
+      <Text style={styles.subTitle}>¿Estás en desacuerdo con la propuesta presentada?</Text> }
       <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
         <View style={{ marginRight: 8 }}>
           <Button
@@ -33,7 +37,7 @@ export default class RejectRequestModal extends Component {
           />
         </View>
         <Button
-          onPress={() => this.props.onSubmit(this.state.requestId)}
+          onPress={() => this.props.onSubmit(this.state.request)}
           title="Rechazar"
           color={COLORS.danger}
         />

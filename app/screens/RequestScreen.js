@@ -34,16 +34,20 @@ export default class RequestScreen extends React.Component {
     this.setState({ requests: response.data })
   }
 
-  async acceptRequest(requestId){
-    let acceptResponse = await apiProvider.acceptStudentRequest(requestId);
+  async acceptRequest(request){
+    let acceptResponse;
+    if(request.Project.state_id == 1) acceptResponse = await apiProvider.acceptStudentRequest(request.id);
+    else acceptResponse = await apiProvider.acceptProposalStudentRequest(request.id);
     // storageProvider.storeCurrentProject(createResponse.data)
     console.log('acceptResponse:',acceptResponse)
     await this.getStudentRequests();
     this.AcceptRequestModal.close()
   }
 
-  async rejectRequest(requestId){
-    let rejectResponse = await apiProvider.rejectStudentRequest(requestId);
+  async rejectRequest(request){
+    let rejectResponse;
+    if(request.Project.state_id == 1) rejectResponse = await apiProvider.rejectStudentRequest(request.id);
+    else rejectResponse = await apiProvider.rejectProposalStudentRequest(request.id);
     // storageProvider.storeCurrentProject(createResponse.data)
     console.log('rejectResponse:',rejectResponse)
     await this.getStudentRequests();
@@ -62,20 +66,26 @@ export default class RequestScreen extends React.Component {
       </View> 
     );
   }
-
+  // INIT_IDEA: 1,
+  // PENDING_DOC: 2,
+  // PENDING_REV: 3,
+  // PENDING_PRES: 4,
+  // PENDING_PUB: 5,
+  // PUBLISH: 6
   requestAccepted(request){
-    return request.status == 'accepted'
+    return (request.status == 'accepted' && request.Project.state_id == 1) || (request.accepted_proposal == 'accepted');
   }
 
   requestRejected(request){
-    return request.status == 'rejected'
+    return (request.status == 'rejected' && request.Project.state_id == 1) || (request.accepted_proposal == 'rejected');
   }
 
   requestPending(request){
-    return request.status == 'pending'
+    return request.status == 'pending' || (request.accepted_proposal == 'pending' && request.Project.state_id == 2);
   }
 
   renderRequest(request) {
+    console.log('render request: ', request)
     return (
       <View>
         <CardSection>
@@ -91,12 +101,12 @@ export default class RequestScreen extends React.Component {
           {this.requestPending(request.item) ?
           <View style={{ flex: 3 }}>
             <TouchableOpacity style={{ flex: 1.5, paddingLeft: 12 }} 
-              onPress={() => this.AcceptRequestModal.show(request.item.id)}
+              onPress={() => this.AcceptRequestModal.show(request.item)}
             >
               <Ionicons name='ios-checkmark' size={40} color='#22bb33' />
             </TouchableOpacity>
             <TouchableOpacity style={{ flex: 1.5 }} 
-              onPress={() => this.RejectRequestModal.show(request.item.id)}
+              onPress={() => this.RejectRequestModal.show(request.item)}
             >
               <Ionicons name='ios-close' size={40} color='#bb2124' />
             </TouchableOpacity>

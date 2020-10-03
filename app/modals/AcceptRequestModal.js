@@ -9,22 +9,26 @@ export default class AcceptRequestModal extends Component {
     super();
     this.state = {
       visibleModal: null,
-      requestId: null
+      request: null
     };
   };
 
-  show(requestId){
-    this.setState({ visibleModal: 'backdropPress', requestId });
+  show(request){
+    this.setState({ visibleModal: 'backdropPress', request });
   };
 
   close(){
-    this.setState({ visibleModal: null, requestId: null });
+    this.setState({ visibleModal: null, request: null });
   };
 
   renderModalContent = () => (
     <View style={styles.content}>
-      <Text style={styles.title}>Aceptar pedido de colaboración</Text>
-      <Text style={styles.subTitle}>¿Estás seguro de que quieres aceptar el pedido para trabajar en el proyecto?</Text>
+      {this.state.request != null && this.state.request.status == 'pending' ?
+      <Text style={styles.title}>Aceptar pedido de colaboración</Text> :
+      <Text style={styles.title}>Aceptar propuesta</Text> }
+      {this.state.request != null && this.state.request.status == 'pending' ?
+      <Text style={styles.subTitle}>¿Estás seguro de que acepta la propuesta?</Text> :
+      <Text style={styles.subTitle}>¿Estás de acuerdo con la propuesta presentada?</Text> }
       <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
         <View style={{ marginRight: 8 }}>
           <Button
@@ -33,7 +37,7 @@ export default class AcceptRequestModal extends Component {
           />
         </View>
         <Button
-          onPress={() => this.props.onSubmit(this.state.requestId)}
+          onPress={() => this.props.onSubmit(this.state.request)}
           title="Aceptar"
           color={COLORS.success}
         />
@@ -42,6 +46,7 @@ export default class AcceptRequestModal extends Component {
   );
 
   render() {
+    console.log(this.state);
     return (
       <Modal
       isVisible={this.state.visibleModal === 'backdropPress'}
