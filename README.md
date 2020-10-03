@@ -11,12 +11,11 @@ https://facebook.github.io/react-native/docs/getting-started
 
 ``` npm i ```
 
-4. Correr comando segun plataforma
+4. Correr comando
 
-- Para correrlo en Android:
+``` npx react-native start ```
 
-``` react-native run-android ```
-
+- Para correrlo en Android, abrir Android Studio y correrlo.
 
 - Para correrlo en iOS:
 
