@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AcceptRequestModal from '../modals/AcceptRequestModal'
 import RejectRequestModal from '../modals/RejectRequestModal'
 import COLORS from '../util/colors';
+import storageProvider from '../providers/storageProvider';
+import Global from './Global';
 
 export default class RequestScreen extends React.Component {
 
@@ -41,7 +43,14 @@ export default class RequestScreen extends React.Component {
     // storageProvider.storeCurrentProject(createResponse.data)
     console.log('acceptResponse:',acceptResponse)
     await this.getStudentRequests();
+    await storageProvider.storeCurrentProject(acceptResponse.data.Project.id)
+    await this.updateProject();
     this.AcceptRequestModal.close()
+  }
+
+  async updateProject(){
+    const project = await apiProvider.getMyProject();
+    Global.myProjectScreen.setState({ project });
   }
 
   async rejectRequest(request){

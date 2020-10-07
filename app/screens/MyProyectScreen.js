@@ -9,6 +9,7 @@ import DeleteProjectModal from '../modals/DeleteProjectModal'
 import apiProvider from '../providers/apiProvider'
 import storageProvider from '../providers/storageProvider'
 import fileProvider from '../providers/fileProvider'
+import Global from './Global';
 
 
 export default class MyProyectScreen extends React.Component {
@@ -24,6 +25,8 @@ export default class MyProyectScreen extends React.Component {
       project:null,
       user: null
     };
+
+    Global.myProjectScreen = this;
   }
 
   async componentDidMount() {
@@ -125,7 +128,7 @@ export default class MyProyectScreen extends React.Component {
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Badge
             style={{marginBottom: 12}}
-            value={project.State.id}
+            value={project.State.id + 1}
             status="success"
             badgeStyle={{ height: 66, width: 66, borderRadius: 90 }}
             textStyle={{fontSize: 24}}
