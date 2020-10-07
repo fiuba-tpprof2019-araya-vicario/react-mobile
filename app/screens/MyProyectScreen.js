@@ -74,6 +74,12 @@ export default class MyProyectScreen extends React.Component {
      console.log('response from picker',response);
    }
 
+   renderStatus(status){
+     if(status == 'accepted') return 'aceptada';
+     if(status == 'pending') return 'pendiente';
+     return status;
+   }
+
 
   renderProjectInfo(){
     console.log('renderProjectInfo: ', this.state)
@@ -95,16 +101,16 @@ export default class MyProyectScreen extends React.Component {
           </Text>
           {this.state.project.Students.map(student => 
             <Text style={styles.info}>
-            {` - ${student.name} ${student.surname} (${student.email}) (${student.StudentRequests[0].status})`}
+            {` - ${student.name} ${student.surname} (${student.email}) (${this.renderStatus(student.StudentRequests[0].status)})`}
             </Text>)}
           
           <Text style={styles.subTitle}>{'Tutores:'}</Text>
           <Text style={styles.info}>
-          {` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email} (${this.state.project.Tutor.TutorRequests[0].status})`}
+          {` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email}) (${this.renderStatus(this.state.project.Tutor.TutorRequests[0].status)})`}
           </Text>
           {this.state.project.Cotutors.map(cotutor =>
            <Text style={styles.info}>
-           {` - ${cotutor.name} ${cotutor.surname} (${cotutor.email}) (${cotutor.TutorRequests[0].status})`}
+           {` - ${cotutor.name} ${cotutor.surname} (${cotutor.email}) (${this.renderStatus(cotutor.TutorRequests[0].status)})`}
            </Text>)}
 
 

@@ -20,7 +20,7 @@ export default class IdeasScreen extends React.Component {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Ideas</Text>
-      <Button onPress={this.pickDocument} title="Elejir Documento" />
+      {/* <Button onPress={this.pickDocument} title="Elejir Documento" /> */}
       </View>
       );
   }
