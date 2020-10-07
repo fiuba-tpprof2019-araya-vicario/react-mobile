@@ -93,38 +93,32 @@ export default class MyProyectScreen extends React.Component {
         <View style={{ flex: 2, alignItems: 'flex-start' }}>
           <Text style={styles.subTitle}>{this.state.project.name}</Text>
           <Text style={styles.info}>{this.state.project.description}</Text>
-
-
+          <Text>{'\n'}</Text>
           <Text style={styles.subTitle}>{'Autores:'}</Text>
           <Text style={styles.info}>
             {` - ${this.state.project.Creator.name} ${this.state.project.Creator.surname} (${this.state.project.Creator.email})`}
           </Text>
           {this.state.project.Students.map(student => 
             <Text style={styles.info}>
-            {` - ${student.name} ${student.surname} (${student.email}) (${this.renderStatus(student.StudentRequests[0].status)})`}
+              {` - ${student.name} ${student.surname} (${student.email}) (${this.renderStatus(student.StudentRequests[0].status)})`}
             </Text>)}
-          
+            <Text>{'\n'}</Text>
           <Text style={styles.subTitle}>{'Tutores:'}</Text>
           <Text style={styles.info}>
-          {` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email}) (${this.renderStatus(this.state.project.Tutor.TutorRequests[0].status)})`}
+            {` - ${this.state.project.Tutor.name} ${this.state.project.Tutor.surname} (${this.state.project.Tutor.email}) (${this.renderStatus(this.state.project.Tutor.TutorRequests[0].status)})`}
           </Text>
           {this.state.project.Cotutors.map(cotutor =>
-           <Text style={styles.info}>
-           {` - ${cotutor.name} ${cotutor.surname} (${cotutor.email}) (${this.renderStatus(cotutor.TutorRequests[0].status)})`}
-           </Text>)}
-
-
-
+            <Text style={styles.info}>
+              {` - ${cotutor.name} ${cotutor.surname} (${cotutor.email}) (${this.renderStatus(cotutor.TutorRequests[0].status)})`}
+            </Text>)}
+          <Text>{'\n'}</Text>
           <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-
           {(this.state.project.State.id <4) ? this.renderLeaveButton() : null}
-
           {(this.state.project.Creator.id == this.state.user && this.state.project.State.id <3) ? this.renderEditButton() : null}
           </View>
         </View>
       </View>
       )   
-
   }
 
 
